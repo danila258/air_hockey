@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Shaders/pass_through.vert</file>
+        <file>Shaders/simple.frag</file>
+    </qresource>
+</RCC>
