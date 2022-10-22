@@ -1,6 +1,8 @@
 #ifndef GameObject_H
 #define GameObject_H
 
+#include "../GameLogic/Configuration.h"
+
 #include <QVector>
 #include <QVector2D>
 #include <QMatrix4x4>
@@ -21,12 +23,14 @@ public:
     const QMatrix4x4& getTransform();
 
     const QVector2D& getCenter();
-    const int getX();
-    const int getY();
+    const float getX();
+    const float getY();
 
-    int getRadius();
+    float getRadius();
     int getNumSegments();
     const QVector2D& getSpeed();
+
+    void resetDifVector();
 
     void translate(const QVector2D& center);
     void translate(float x, float y);
@@ -46,17 +50,17 @@ public:
 protected:
     QVector<QVector2D> _vertexes;
 
-    QMatrix4x4 _transform = {1.0, 0.0, 0.0, 0.0,
-                             0.0, 1.0, 0.0, 0.0,
-                             0.0, 0.0, 0.0, 0.0,
-                             0.0, 0.0, 0.0, 1.0};
+    QMatrix4x4 _transform = {1.0f, 0.0f, 0.0f, 0.0f,
+                             0.0f, 1.0f, 0.0f, 0.0f,
+                             0.0f, 0.0f, 0.0f, 0.0f,
+                             0.0f, 0.0f, 0.0f, 1.0f};
 
     bool _translateFlag = true;
 
     QVector2D _center;
     QVector2D _speed;
 
-    QVector2D _difCenter;   // = newCenter - oldCenter
+    QVector2D _difVector;   // = newCenter - oldCenter
 
     float _radius;
     float _numSegments;

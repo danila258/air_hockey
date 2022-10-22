@@ -23,10 +23,12 @@ set(PROJECT_SOURCES
     GameLogic/GameWindow.h
     GameLogic/ShaderProgram.cpp
     GameLogic/ShaderProgram.h
+    GameLogic/Physics.cpp
+    GameLogic/Physics.h
     GameObjects/GameObject.cpp
     GameObjects/GameObject.h
-    GameObjects/Puck.cpp
-    GameObjects/Puck.h
+    GameObjects/CircleObject.cpp
+    GameObjects/CircleObject.h
     )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -2,7 +2,7 @@
 
 GameWindow::GameWindow() :
     _program(QString::fromStdString(":/Shaders/pass_through.vert"), QString::fromStdString(":/Shaders/simple.frag")),
-    _userPuck(0, 0, 0, 0, 0.12, 30)
+    _userBat(USER_BAT_CENTER_X, USER_BAT_CENTER_Y, ZERO, ZERO, USER_BAT_RADIUS, USER_BAT_NUM_SEGMENTS)
 {}
 
 GameWindow::~GameWindow()
@@ -22,20 +22,20 @@ void GameWindow::initializeGL()
     _vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
     _vbo.bind();
 
-    _vbo.allocate(_userPuck.getVertexArray(), _userPuck.getVertexArrayByteSize());
+    _vbo.allocate(_userBat.getVertexArray(), _userBat.getVertexArrayByteSize());
 
     _vao.create();
     _vao.bind();
 
     _program.getShaderProgram()->enableAttributeArray(0);
     _program.getShaderProgram()->setAttributeBuffer(0, GL_FLOAT, 0, 2);
-
-    _userPuck.changeCenter(0.2, 0.2);
 }
 
 
 void GameWindow::paintGL()
 {
+    _physics.calulatePhysics();
+
     glClearColor(0.4f, 0.3f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -44,7 +44,7 @@ void GameWindow::paintGL()
 
 	// use our shader program
     _program.getShaderProgram()->bind();
-    _program.getShaderProgram()->setUniformValue("transform", _userPuck.getTransform());
+    _program.getShaderProgram()->setUniformValue("transform", _userBat.getTransform());
 
 	// bind the vertex array object, which in turn binds the vertex buffer object and
 	// sets the attribute buffer in the OpenGL context
@@ -59,21 +59,84 @@ void GameWindow::paintGL()
     // finally release VAO again (not really necessary, just for completeness)
     _vao.release();
 
-    calculatePhysics();
+    gameCycle();
 }
 
-void GameWindow::calculatePhysics()
+void GameWindow::gameCycle()
 {
     update();
 }
 
+void GameWindow::toGlCoordinates(QVector2D& vertex)
+{
+    vertex = {(vertex.x() - width() / 2) / (width() / 2), - (vertex.y() - width() / 2) / (width() / 2)};
+}
+
 void GameWindow::mouseMoveEvent(QMouseEvent* event)
 {
-    float x = event->position().rx();
-    float y = event->position().ry();
+    if (!_clickFlag)
+    {
+        return;
+    }
 
-    x = (x - width() / 2) / (width() / 2);
-    y = - (y - height() / 2) / (height() / 2);
+    QVector2D position( event->position().rx(), event->position().ry() );
+    toGlCoordinates(position);
 
-    _userPuck.setCenter(x, y);
+    QVector2D test = position - _lastPosition;
+    test[0] = std::abs(test[0]);
+    test[1] = std::abs(test[1]);
+
+    if (test[0] > maxX)
+    {
+        maxX = test[0];
+    }
+    else if (test[0] < minX && test[0] != 0)
+    {
+        minX = test[0];
+    }
+
+    if (test[1] > maxY)
+    {
+        maxY = test[1];
+    }
+    else if (test[1] < minY && test[1] != 0)
+    {
+        minY = test[1];
+    }
+
+    //qDebug() << "maxX = " << maxX << "minX = " << minX;
+    //qDebug() << "maxY = " << maxY << "minY = " << minY;
+    qDebug() << "get event";
+
+    _userBat.changeCenter(position - _lastPosition);
+    _lastPosition = position;
 }
+
+void GameWindow::mousePressEvent(QMouseEvent* event)
+{
+    QVector2D position( event->position().rx(), event->position().ry() );
+    toGlCoordinates(position);
+
+    if (!(_userBat.getX() - _userBat.getRadius() <= position.x() &&
+          position.x() <= _userBat.getX() + _userBat.getRadius() &&
+          _userBat.getY() - _userBat.getRadius() <= position.y() &&
+          position.y() <= _userBat.getY() + _userBat.getRadius()))
+    {
+        return;
+    }
+
+    if (event->button() == Qt::LeftButton)
+    {
+        _lastPosition = {position.x(), position.y()};
+        _clickFlag = true;
+    }
+}
+
+void GameWindow::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        _clickFlag = false;
+    }
+}
+
