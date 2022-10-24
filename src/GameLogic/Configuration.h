@@ -14,12 +14,12 @@
 
 #define PUCK_CENTER_X 0.0f
 #define PUCK_CENTER_Y 0.0f
-#define PUCK_RADIUS 0.6f
+#define PUCK_RADIUS 0.06f
 #define PUCK_NUM_SEGMENTS 15
 
 #define BOARD_WIDTH 0.04f
 
-#define FRICTION_FORCE 0.002f
+#define FRICTION_FORCE 0.00002f
 
 #define MAX_X 1.0f
 #define MIN_X -1.0f

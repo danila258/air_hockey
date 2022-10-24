@@ -6,10 +6,14 @@ ShaderProgram::ShaderProgram(const QString& vertexShaderFilePath, const QString&
     _program(nullptr)
 {}
 
+void ShaderProgram::setShaderPath(const QString& vertexShaderFilePath, const QString& fragmentShaderFilePath)
+{
+   _vertexShaderFilePath = vertexShaderFilePath;
+   _fragmentShaderFilePath = fragmentShaderFilePath;
+}
+
 void ShaderProgram::create()
 {
-    Q_ASSERT(_program == nullptr);
-
     _program = new QOpenGLShaderProgram();
 
     if (!_program->addShaderFromSourceFile(QOpenGLShader::Vertex, _vertexShaderFilePath))

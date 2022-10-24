@@ -1,34 +1,49 @@
 #include "GameWindow.h"
 
-GameWindow::GameWindow() :
-    _program(QString::fromStdString(":/Shaders/pass_through.vert"), QString::fromStdString(":/Shaders/simple.frag")),
-    _userBat(USER_BAT_CENTER_X, USER_BAT_CENTER_Y, ZERO, ZERO, USER_BAT_RADIUS, USER_BAT_NUM_SEGMENTS)
-{}
+GameWindow::GameWindow() : _physics(_controlledObjects, _freeObjects)
+{
+    _userBat = new CircleObject(USER_BAT_CENTER_X, USER_BAT_CENTER_Y, ZERO, ZERO, USER_BAT_RADIUS,
+                                              USER_BAT_NUM_SEGMENTS, true);
+
+    CircleObject* aiBat = new CircleObject(AI_BAT_CENTER_X, AI_BAT_CENTER_Y, ZERO, ZERO, AI_BAT_RADIUS,
+                                             AI_BAT_NUM_SEGMENTS, true);
+
+    CircleObject* puck = new CircleObject(PUCK_CENTER_X, PUCK_CENTER_Y, ZERO, ZERO, PUCK_RADIUS, PUCK_NUM_SEGMENTS,
+                                          false);
+
+    _controlledObjects.push_back(_userBat);
+    _controlledObjects.push_back(aiBat);
+    _freeObjects.push_back(puck);
+}
 
 GameWindow::~GameWindow()
 {
 	makeCurrent();
 
-    _vao.destroy();
-    _vbo.destroy();
+    for (auto&& object : _controlledObjects)
+    {
+        object->destroy();
+        delete object;
+    }
+
+    for (auto&& object : _freeObjects)
+    {
+        object->destroy();
+        delete object;
+    }
 }
 
 void GameWindow::initializeGL()
 {    
-    _program.create();
+    for (auto&& object : _controlledObjects)
+    {
+        object->create();
+    }
 
-    _vbo = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
-    _vbo.create();
-    _vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    _vbo.bind();
-
-    _vbo.allocate(_userBat.getVertexArray(), _userBat.getVertexArrayByteSize());
-
-    _vao.create();
-    _vao.bind();
-
-    _program.getShaderProgram()->enableAttributeArray(0);
-    _program.getShaderProgram()->setAttributeBuffer(0, GL_FLOAT, 0, 2);
+    for (auto&& object : _freeObjects)
+    {
+        object->create();
+    }
 }
 
 
@@ -42,22 +57,15 @@ void GameWindow::paintGL()
     const qreal retinaScale = devicePixelRatio(); // needed for Macs with retina display
     glViewport(0, 0, width() * retinaScale, height() * retinaScale);
 
-	// use our shader program
-    _program.getShaderProgram()->bind();
-    _program.getShaderProgram()->setUniformValue("transform", _userBat.getTransform());
+    for (auto&& object : _controlledObjects)
+    {
+        object->render();
+    }
 
-	// bind the vertex array object, which in turn binds the vertex buffer object and
-	// sets the attribute buffer in the OpenGL context
-    _vao.bind();
-	// For old Intel drivers you may need to explicitely re-bind the index buffer, because
-	// these drivers do not remember the binding-state of the index/element-buffer in the VAO
-	//	m_indexBufferObject.bind();
-
-	// now draw the two triangles via index drawing
-	// - GL_TRIANGLES - draw individual triangles via elements
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 100);
-    // finally release VAO again (not really necessary, just for completeness)
-    _vao.release();
+    for (auto&& object : _freeObjects)
+    {
+        object->render();
+    }
 
     gameCycle();
 }
@@ -106,9 +114,10 @@ void GameWindow::mouseMoveEvent(QMouseEvent* event)
 
     //qDebug() << "maxX = " << maxX << "minX = " << minX;
     //qDebug() << "maxY = " << maxY << "minY = " << minY;
-    qDebug() << "get event";
 
-    _userBat.changeCenter(position - _lastPosition);
+    _userBat->changeCenter(position - _lastPosition);
+    _userBat->setSpeed(position - _lastPosition);
+
     _lastPosition = position;
 }
 
@@ -117,10 +126,10 @@ void GameWindow::mousePressEvent(QMouseEvent* event)
     QVector2D position( event->position().rx(), event->position().ry() );
     toGlCoordinates(position);
 
-    if (!(_userBat.getX() - _userBat.getRadius() <= position.x() &&
-          position.x() <= _userBat.getX() + _userBat.getRadius() &&
-          _userBat.getY() - _userBat.getRadius() <= position.y() &&
-          position.y() <= _userBat.getY() + _userBat.getRadius()))
+    if (!(_userBat->getX() - _userBat->getRadius() <= position.x() &&
+          position.x() <= _userBat->getX() + _userBat->getRadius() &&
+          _userBat->getY() - _userBat->getRadius() <= position.y() &&
+          position.y() <= _userBat->getY() + _userBat->getRadius()))
     {
         return;
     }

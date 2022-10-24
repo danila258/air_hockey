@@ -2,7 +2,6 @@
 #define RectangleWindow_H
 
 #include "Configuration.h"
-#include "ShaderProgram.h"
 #include "Physics.h"
 #include "../GameObjects/CircleObject.h"
 
@@ -28,16 +27,12 @@ private:
     void gameCycle();
     void toGlCoordinates(QVector2D& vertex);    
 
-    Physics _physics = {_userBat, _aiBat, _puck};
+    QVector<GameObject*> _controlledObjects;
+    QVector<GameObject*> _freeObjects;
 
-    QOpenGLVertexArrayObject _vao;
-    QOpenGLBuffer _vbo;
-    ShaderProgram _program;
+    Physics _physics;
 
-    CircleObject _userBat;
-    CircleObject _aiBat;
-    CircleObject _puck;
-
+    CircleObject* _userBat;
     QVector2D _lastPosition;
     bool _clickFlag = false;
 

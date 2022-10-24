@@ -3,12 +3,13 @@
 CircleObject::CircleObject() : GameObject()
 {}
 
-CircleObject::CircleObject(float x, float y, float dx, float dy, float radius, float numSegments) :
-    GameObject(x, y, dx, dy, radius, numSegments)
+CircleObject::CircleObject(float x, float y, float dx, float dy, float radius, float numSegments, bool controlledFlag) :
+    GameObject(x, y, dx, dy, radius, numSegments, controlledFlag)
 {}
 
-CircleObject::CircleObject(const QVector2D& center, const QVector2D& speed, float radius, float numSegments) :
-    GameObject(center, speed, radius, numSegments)
+CircleObject::CircleObject(const QVector2D& center, const QVector2D& speed, float radius, float numSegments,
+                           bool controlledFlag) :
+    GameObject(center, speed, radius, numSegments, controlledFlag)
 {}
 
 QVector2D* const CircleObject::getVertexArray()
@@ -28,4 +29,39 @@ QVector2D* const CircleObject::getVertexArray()
 int CircleObject::getVertexArrayByteSize()
 {
     return _numSegments * 2 * sizeof(float);
+}
+
+void CircleObject::create()
+{
+    _vertexArrayByteSize = getVertexArrayByteSize();
+
+    _vbo = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    _vbo.create();
+    _vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    _vbo.bind();
+
+    _vbo.allocate(getVertexArray(), _vertexArrayByteSize);
+
+    _vao.create();
+    _vao.bind();
+
+    _program.setShaderPath(":/Shaders/pass_through.vert", ":/Shaders/simple.frag");
+    _program.create();
+    _program.getShaderProgram()->enableAttributeArray(0);
+    _program.getShaderProgram()->setAttributeBuffer(0, GL_FLOAT, 0, 2);
+
+    _vao.release();
+    _vbo.release();
+}
+
+void CircleObject::render()
+{
+    _program.getShaderProgram()->bind();
+    _program.getShaderProgram()->setUniformValue("transform", getTransform());
+
+    _vao.bind();
+
+    glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexArrayByteSize);
+
+    _vao.release();
 }

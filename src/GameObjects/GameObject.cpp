@@ -1,32 +1,29 @@
 #include "GameObject.h"
 
-GameObject::GameObject() : _center(ZERO, ZERO), _difVector(_center), _speed(ZERO, ZERO), _radius(0.5), _numSegments(4)
+GameObject::GameObject() : _center(ZERO, ZERO), _difVector(_center), _speed(ZERO, ZERO), _radius(0.5), _numSegments(4),
+    _controlledFlag(true)
 {}
 
-GameObject::GameObject(float x, float y, float dx, float dy, float radius, float numSegments)
-    : _center(x, y), _difVector(_center), _speed(dx, dy), _radius(radius), _numSegments(numSegments)
+GameObject::GameObject(float x, float y, float dx, float dy, float radius, float numSegments, bool controlledFlag)
+    : _center(x, y), _difVector(_center), _speed(dx, dy), _radius(radius), _numSegments(numSegments),
+      _controlledFlag(controlledFlag)
 {}
 
-GameObject::GameObject(const QVector2D& center, const QVector2D& speed, float radius,  float numSegments)
-    : _center(center), _difVector(_center), _speed(speed), _radius(radius), _numSegments(numSegments)
+GameObject::GameObject(const QVector2D& center, const QVector2D& speed, float radius, float numSegments,
+                       bool controlledFlag)
+    : _center(center), _difVector(_center), _speed(speed), _radius(radius), _numSegments(numSegments),
+      _controlledFlag(controlledFlag)
 {}
 
-const QMatrix4x4& GameObject::getTransform()
+GameObject::~GameObject()
 {
-    if (_translateFlag)
-    {
-        qDebug() << "translate" << _center << _difVector;
+   destroy();
+}
 
-        _transform.translate(_difVector.x(), _difVector.y());
-        _translateFlag = false;
-        _difVector = {ZERO, ZERO};
-    }
-    else
-    {
-        _transform.translate(_speed.x(), _speed.y());
-    }
-
-    return _transform;
+void GameObject::destroy()
+{
+    _vao.destroy();
+    _vbo.destroy();
 }
 
 const QVector2D& GameObject::getCenter()
@@ -82,6 +79,21 @@ void GameObject::setSpeed(const QVector2D& speed)
     _speed = speed;
 }
 
+void GameObject::setSpeed(float x, float y)
+{
+    _speed = {x, y};
+}
+
+void GameObject::setSpeedX(float x)
+{
+    _speed[0] = x;
+}
+
+void GameObject::setSpeedY(float y)
+{
+    _speed[1] = y;
+}
+
 void GameObject::changeCenter(const QVector2D& center)
 {
     _translateFlag = true;
@@ -103,4 +115,41 @@ void GameObject::changeSpeed(const QVector2D& speed)
 void GameObject::changeSpeed(float x, float y)
 {
     changeSpeed({x, y});
+}
+
+const QMatrix4x4& GameObject::getTransform()
+{
+    if (_controlledFlag)
+    {
+        if (_translateFlag)
+        {
+            _transform.translate(_difVector.x(), _difVector.y());
+
+            _translateFlag = false;
+            _difVector = {ZERO, ZERO};
+        }
+        else
+        {
+            _transform.translate(ZERO, ZERO);
+        }
+    }
+    else
+    {
+        if (_translateFlag)
+        {
+            qDebug() << "translate and center = " << _center;
+            _transform.translate(_difVector.x(), _difVector.y());
+
+            _translateFlag = false;
+            _difVector = {ZERO, ZERO};
+        }
+        else
+        {
+            qDebug() << "use speed = " << _speed;
+            _center += _speed;
+            _transform.translate(_speed.x(), _speed.y());
+        }       
+    }
+
+    return _transform;
 }

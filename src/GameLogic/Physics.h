@@ -4,20 +4,29 @@
 #include "Configuration.h"
 #include "../GameObjects/CircleObject.h"
 
+#include <cmath>
+
 
 class Physics
 {
 public:
-    Physics(CircleObject& userBat, CircleObject& aiBat, CircleObject& puck);
+    Physics(QVector<GameObject*>& controlledObjects, QVector<GameObject*>& freeObjects);
+
+    void setControlledObjects(QVector<GameObject*>& controlledObjects);
+    void setFreeObjects(QVector<GameObject*>& freeObjects);
 
     void calulatePhysics();
 
 private:
-    CircleObject& _userBat;
-    CircleObject& _aiBat;
-    CircleObject& _puck;
+    QVector<GameObject*>& _controlledObjects;
+    QVector<GameObject*>& _freeObjects;
 
-    void checkUserInput();
+    void calculateObjectsCollisions();
+    void calculateWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag);
+    void frictionForce();
+
+    float getCos(const QVector2D& v1, const QVector2D& v2);
+    QVector2D getReflectedVector(const QVector2D& vector, const QVector2D& normal);
 };
 
 

@@ -11,6 +11,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_PREFIX_PATH /home/danila/other/Qt/6.2.4/gcc_64)
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Gui OpenGLWidgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Gui OpenGLWidgets)
 
