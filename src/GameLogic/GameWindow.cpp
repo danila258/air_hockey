@@ -75,7 +75,7 @@ void GameWindow::gameCycle()
     update();
 }
 
-void GameWindow::toGlCoordinates(QVector2D& vertex)
+void GameWindow::toGlCoordinates(QVector2D& vertex) const
 {
     vertex = {(vertex.x() - width() / 2) / (width() / 2), - (vertex.y() - width() / 2) / (width() / 2)};
 }

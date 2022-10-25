@@ -26,7 +26,7 @@ QVector2D* const CircleObject::getVertexArray()
     return _vertexes.data();
 }
 
-int CircleObject::getVertexArrayByteSize()
+const int CircleObject::getVertexArrayByteSize() const
 {
     return _numSegments * 2 * sizeof(float);
 }

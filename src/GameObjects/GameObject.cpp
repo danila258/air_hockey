@@ -26,31 +26,31 @@ void GameObject::destroy()
     _vbo.destroy();
 }
 
-const QVector2D& GameObject::getCenter()
+const QVector2D& GameObject::getCenter() const
 {
     return _center;
 }
 
-const float GameObject::getX()
+float GameObject::getX() const
 {
     return _center.x();
 }
-const float GameObject::getY()
+float GameObject::getY() const
 {
     return _center.y();
 }
 
-float GameObject::getRadius()
+float GameObject::getRadius() const
 {
     return _radius;
 }
 
-int GameObject::getNumSegments()
+int GameObject::getNumSegments() const
 {
     return _numSegments;
 }
 
-const QVector2D& GameObject::getSpeed()
+const QVector2D& GameObject::getSpeed() const
 {
     return _speed;
 }
@@ -137,15 +137,13 @@ const QMatrix4x4& GameObject::getTransform()
     {
         if (_translateFlag)
         {
-            qDebug() << "translate and center = " << _center;
             _transform.translate(_difVector.x(), _difVector.y());
-
             _translateFlag = false;
+
             _difVector = {ZERO, ZERO};
         }
         else
         {
-            qDebug() << "use speed = " << _speed;
             _center += _speed;
             _transform.translate(_speed.x(), _speed.y());
         }       

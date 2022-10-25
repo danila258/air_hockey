@@ -16,9 +16,9 @@ void Physics::setFreeObjects(QVector<GameObject*>& freeObjects)
 
 void Physics::calulatePhysics()
 {
-    calculateObjectsCollisions();
-    calculateWallsCollisions(_freeObjects, true);
     calculateWallsCollisions(_controlledObjects, false);
+    calculateWallsCollisions(_freeObjects, true);
+    calculateObjectsCollisions();
     frictionForce();
 }
 
@@ -44,7 +44,6 @@ void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeOb
 
             if (freeObjectsFlag)
             {
-                qDebug() << "reflection 2";
                 object->setSpeed(getReflectedVector(object->getSpeed(), {1.0f, 0.0f}));
             }
         }
@@ -55,7 +54,6 @@ void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeOb
 
             if (freeObjectsFlag)
             {
-                qDebug() << "reflection 3";
                 object->setSpeed(getReflectedVector(object->getSpeed(), {0.0f, -1.0f}));
             }
         }
@@ -66,7 +64,6 @@ void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeOb
 
             if (freeObjectsFlag)
             {
-                qDebug() << "reflection 4";
                 object->setSpeed(getReflectedVector(object->getSpeed(), {0.0f, 1.0f}));
             }
         }
@@ -85,24 +82,25 @@ void Physics::calculateObjectsCollisions()
     {
         for (auto&& controlledObject : _controlledObjects)
         {
-            QVector2D newVector(freeObject->getCenter() - controlledObject->getCenter());
+            QVector2D connectedVector(freeObject->getCenter() - controlledObject->getCenter());
 
-            if (newVector.length() <= freeObject->getRadius() + controlledObject->getRadius())
+            if (connectedVector.length() <= freeObject->getRadius() + controlledObject->getRadius())
             {
-                float cosControlled = getCos(controlledObject->getSpeed(), newVector);
-                float cosFree = getCos(freeObject->getSpeed(), newVector);
+                removeIntersections(*freeObject, *controlledObject);
+                connectedVector = freeObject->getCenter() - controlledObject->getCenter();
 
-                if (cosControlled != ZERO)
+                if (getCos(connectedVector, freeObject->getSpeed()) > 0)
                 {
-                    freeObject->setSpeed(controlledObject->getSpeed() / cosControlled +
-                                         freeObject->getSpeed() * cosFree);
+                    freeObject->setSpeed(getProjection(connectedVector, controlledObject->getSpeed()) +
+                                         getProjection(connectedVector, freeObject->getSpeed()));
                 }
                 else
                 {
-                    freeObject->setSpeed(freeObject->getSpeed() * cosFree);
+                    freeObject->setSpeed(getProjection(connectedVector, controlledObject->getSpeed()) -
+                                         getProjection(connectedVector, freeObject->getSpeed()));
                 }
 
-                qDebug() << "bat and puck collision";
+                // add max speed
             }
         }
     }
@@ -135,11 +133,11 @@ void Physics::frictionForce()
         {
             if (speedY > ZERO)
             {
-                object->setSpeedY(object->getSpeed().y() - FRICTION_FORCE);
+                object->setSpeedY(speedY - FRICTION_FORCE);
             }
             else
             {
-                object->setSpeedY(object->getSpeed().y() + FRICTION_FORCE);
+                object->setSpeedY(speedY + FRICTION_FORCE);
             }
         }
         else
@@ -149,33 +147,91 @@ void Physics::frictionForce()
     }
 }
 
-float Physics::getCos(const QVector2D& v1, const QVector2D& v2)
+void Physics::removeIntersections(GameObject& freeObject, const GameObject& controlledObject) const
 {
-    if (std::isnan(QVector2D::dotProduct(v1, v2) / (v1.length() * v2.length())))
-    {
-        //qDebug() << "length " << v1.length() << " " << v2.length();
-        //qDebug() << "scalar multiply " << QVector2D::dotProduct(v1, v2);
+    QVector2D connectedVector = freeObject.getCenter() - controlledObject.getCenter();
+    QVector2D motionVector = freeObject.getSpeed();
 
+    if (connectedVector.length() + MAX_INTERSECTION <= freeObject.getRadius() + controlledObject.getRadius())
+    {
+        return;
+    }
+
+    float a = std::pow(motionVector.x(), 2.0f) + std::pow(motionVector.y(), 2.0f);
+    float b = - 2.0f * connectedVector.x() * motionVector.x() - 2.0f * connectedVector.y() * motionVector.y();
+    float c = std::pow(connectedVector.x(), 2.0f) + std::pow(connectedVector.y(), 2.0f) -
+              std::pow(freeObject.getRadius() + controlledObject.getRadius(), 2.0f);
+
+    QVector2D ratio;
+
+    try
+    {
+         ratio = solveQuadraticEquation(a, b, c);
+    }
+    catch (...)
+    {
+        return;
+    }
+
+    QVector2D correctVector;
+
+    correctVector = connectedVector - ratio[1] * motionVector;
+    QVector2D centerOne = correctVector + controlledObject.getCenter();
+
+    correctVector = connectedVector - ratio[0] * motionVector;
+    QVector2D centerTwo = correctVector + controlledObject.getCenter();
+
+    if (freeObject.getCenter().distanceToPoint(centerOne) <= freeObject.getCenter().distanceToPoint(centerTwo))
+    {
+        freeObject.setCenter(centerOne);
+    }
+    else
+    {
+        freeObject.setCenter(centerTwo);
+    }
+}
+
+QVector2D Physics::getReflectedVector(const QVector2D& vector, const QVector2D& normal) const
+{
+    float dot = QVector2D::dotProduct(normal, vector);
+
+    if (dot == ZERO)
+    {
+        return -vector;
+    }
+
+    return vector - 2.0f * normal * dot;
+}
+
+float Physics::getCos(const QVector2D v1, const QVector2D v2) const
+{
+    if (v1.length() == 0 || v2.length() == 0)
+    {
         return ZERO;
     }
 
     return QVector2D::dotProduct(v1, v2) / (v1.length() * v2.length());
 }
 
-QVector2D Physics::getReflectedVector(const QVector2D& vector, const QVector2D& normal)
+QVector2D Physics::getProjection(const QVector2D& axis, const QVector2D& vector) const
 {
-    qDebug() << "vector = " << vector;
-    qDebug() << "dotProduct = " << QVector2D::dotProduct(normal, vector);
-    qDebug() << "normal * dotProduct = " << normal * QVector2D::dotProduct(normal, vector);
-    qDebug() << "2.0f * normal * dotProduct = " << 2.0f * normal * QVector2D::dotProduct(normal, vector);
-    qDebug() << "vector - 2.0f * normal * dotProduct = " << vector - 2.0f * normal * QVector2D::dotProduct(normal, vector);
+    return axis * (QVector2D::dotProduct(axis, vector) / axis.lengthSquared());
+}
 
-    float dot = QVector2D::dotProduct(normal, vector);
+QVector2D Physics::solveQuadraticEquation(float a, float b, float c) const
+{
+    QVector2D answer;
+    float D;
 
-    if (dot == 0.0)
+    D = b * b - 4.0f * a * c;
+
+    if (D == 0)
     {
-        return -vector;
+        throw std::runtime_error("discriminant = 0");
     }
 
-    return vector - 2.0f * normal * dot;
+    answer[0] = (- b + std::sqrt(D)) / (2 * a);
+    answer[1] = (- b - std::sqrt(D)) / (2 * a);
+
+    return answer;
 }

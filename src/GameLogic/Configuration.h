@@ -17,9 +17,10 @@
 #define PUCK_RADIUS 0.06f
 #define PUCK_NUM_SEGMENTS 15
 
-#define BOARD_WIDTH 0.04f
+//#define BOARD_WIDTH 0.04f
+#define MAX_INTERSECTION 0.0000001f
 
-#define FRICTION_FORCE 0.00002f
+#define FRICTION_FORCE 0.0002f
 
 #define MAX_X 1.0f
 #define MIN_X -1.0f

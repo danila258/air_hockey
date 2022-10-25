@@ -24,13 +24,13 @@ public:
     virtual void render() = 0;
     void destroy();
 
-    const QVector2D& getCenter();
-    const float getX();
-    const float getY();
+    const QVector2D& getCenter() const;
+    float getX() const;
+    float getY() const;
 
-    float getRadius();
-    int getNumSegments();
-    const QVector2D& getSpeed();
+    float getRadius() const;
+    int getNumSegments() const;
+    const QVector2D& getSpeed() const;
 
     void resetDifVector();
 
@@ -53,7 +53,7 @@ public:
 
 protected:
     virtual QVector2D* const getVertexArray() = 0;
-    virtual int getVertexArrayByteSize() = 0;
+    virtual const int getVertexArrayByteSize() const = 0;
     const QMatrix4x4& getTransform();
 
     QOpenGLVertexArrayObject _vao;
@@ -75,7 +75,7 @@ protected:
     float _numSegments;
     bool _controlledFlag;
 
-    QVector2D _difVector;   // = newCenter - oldCenter
+    QVector2D _difVector;         // = newCenter - oldCenter
     bool _translateFlag = true;
 };
 

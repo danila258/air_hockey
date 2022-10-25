@@ -25,7 +25,7 @@ private:
     void paintGL() override;
 
     void gameCycle();
-    void toGlCoordinates(QVector2D& vertex);    
+    void toGlCoordinates(QVector2D& vertex) const;
 
     QVector<GameObject*> _controlledObjects;
     QVector<GameObject*> _freeObjects;
