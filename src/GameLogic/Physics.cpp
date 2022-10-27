@@ -17,12 +17,12 @@ void Physics::setFreeObjects(QVector<GameObject*>& freeObjects)
 void Physics::calulatePhysics()
 {
     calculateWallsCollisions(_controlledObjects, false);
-    calculateWallsCollisions(_freeObjects, true);
     calculateObjectsCollisions();
+    calculateWallsCollisions(_freeObjects, true);
     frictionForce();
 }
 
-void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag)
+void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const
 {
     for (auto&& object : objects)
     {
@@ -76,7 +76,7 @@ void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeOb
     }
 }
 
-void Physics::calculateObjectsCollisions()
+void Physics::calculateObjectsCollisions() const
 {
     for (auto&& freeObject : _freeObjects)
     {
@@ -89,39 +89,69 @@ void Physics::calculateObjectsCollisions()
                 removeIntersections(*freeObject, *controlledObject);
                 connectedVector = freeObject->getCenter() - controlledObject->getCenter();
 
+                QVector2D projectionOne;
+                QVector2D projectionSecond = {ZERO, ZERO};
+
                 if (getCos(connectedVector, freeObject->getSpeed()) > 0)
                 {
-                    freeObject->setSpeed(getProjection(connectedVector, controlledObject->getSpeed()) +
-                                         getProjection(connectedVector, freeObject->getSpeed()));
+                    projectionOne = getProjection(connectedVector, freeObject->getSpeed());
                 }
                 else
                 {
-                    freeObject->setSpeed(getProjection(connectedVector, controlledObject->getSpeed()) -
-                                         getProjection(connectedVector, freeObject->getSpeed()));
+                    projectionOne = getProjection(connectedVector, -freeObject->getSpeed());
                 }
 
-                // add max speed
+                if (getCos(connectedVector, controlledObject->getSpeed()) > 0)
+                {
+                    projectionSecond = getProjection(connectedVector, controlledObject->getSpeed());
+                }
+
+                freeObject->setSpeed(projectionOne + projectionSecond);
             }
         }
     }
 }
 
-void Physics::frictionForce()
+void Physics::frictionForce() const
 {
     for (auto&& object : _freeObjects)
     {
         float speedX = object->getSpeed().x();
         float speedY = object->getSpeed().y();
 
-        if (std::abs(speedX) > FRICTION_FORCE)
+        float xInY, forceY, forceX;
+
+        if (speedX == ZERO)
         {
-            if (speedX > ZERO)
+            forceY = FRICTION_FORCE;
+        }
+        else if (speedY == ZERO)
+        {
+            forceX = FRICTION_FORCE;
+        }
+        else
+        {
+            if (speedX > speedY)
             {
-                object->setSpeedX(speedX - FRICTION_FORCE);
+                forceX = std::abs(FRICTION_FORCE * (speedY / speedX + 1.0f));
+                forceY = std::abs(FRICTION_FORCE - forceX);
             }
             else
             {
-                object->setSpeedX(speedX + FRICTION_FORCE);
+                forceY = std::abs(FRICTION_FORCE * (speedX / speedY + 1.0f));
+                forceX = std::abs(FRICTION_FORCE - forceY);
+            }
+        }
+
+        if (std::abs(speedX) > forceX)
+        {
+            if (speedX > ZERO)
+            {
+                object->setSpeedX(speedX - forceX);
+            }
+            else
+            {
+                object->setSpeedX(speedX + forceX);
             }
         }
         else
@@ -129,15 +159,15 @@ void Physics::frictionForce()
             object->setSpeedX(ZERO);
         }
 
-        if (std::abs(speedY) > FRICTION_FORCE)
+        if (std::abs(speedY) > forceY)
         {
             if (speedY > ZERO)
             {
-                object->setSpeedY(speedY - FRICTION_FORCE);
+                object->setSpeedY(speedY - forceY);
             }
             else
             {
-                object->setSpeedY(speedY + FRICTION_FORCE);
+                object->setSpeedY(speedY + forceY);
             }
         }
         else
@@ -152,7 +182,7 @@ void Physics::removeIntersections(GameObject& freeObject, const GameObject& cont
     QVector2D connectedVector = freeObject.getCenter() - controlledObject.getCenter();
     QVector2D motionVector = freeObject.getSpeed();
 
-    if (connectedVector.length() + MAX_INTERSECTION <= freeObject.getRadius() + controlledObject.getRadius())
+    if (connectedVector.length() / (freeObject.getRadius() + controlledObject.getRadius()) >= MAX_INTERSECTION_PERCENT)
     {
         return;
     }
@@ -165,8 +195,8 @@ void Physics::removeIntersections(GameObject& freeObject, const GameObject& cont
     QVector2D ratio;
 
     try
-    {
-         ratio = solveQuadraticEquation(a, b, c);
+    { 
+        ratio = solveQuadraticEquation(a, b, c);
     }
     catch (...)
     {
