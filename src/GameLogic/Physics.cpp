@@ -119,29 +119,15 @@ void Physics::frictionForce() const
         float speedX = object->getSpeed().x();
         float speedY = object->getSpeed().y();
 
-        float xInY, forceY, forceX;
+        float cosX = std::abs(speedX / float(object->getSpeed().length()));
+        float cosY = std::abs(speedY / float(object->getSpeed().length()));
 
-        if (speedX == ZERO)
-        {
-            forceY = FRICTION_FORCE;
-        }
-        else if (speedY == ZERO)
-        {
-            forceX = FRICTION_FORCE;
-        }
-        else
-        {
-            if (speedX > speedY)
-            {
-                forceX = std::abs(FRICTION_FORCE * (speedY / speedX + 1.0f));
-                forceY = std::abs(FRICTION_FORCE - forceX);
-            }
-            else
-            {
-                forceY = std::abs(FRICTION_FORCE * (speedX / speedY + 1.0f));
-                forceX = std::abs(FRICTION_FORCE - forceY);
-            }
-        }
+        float forceX = cosX * FRICTION_FORCE;
+        float forceY = cosY * FRICTION_FORCE;
+
+        qDebug() << cosX << ' ' << speedX << ' ' << object->getSpeed().length();
+        qDebug() << cosY << ' ' << speedY << ' ' << object->getSpeed().length();
+        qDebug() << '\n';
 
         if (std::abs(speedX) > forceX)
         {
