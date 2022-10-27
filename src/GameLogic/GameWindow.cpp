@@ -90,33 +90,8 @@ void GameWindow::mouseMoveEvent(QMouseEvent* event)
     QVector2D position( event->position().rx(), event->position().ry() );
     toGlCoordinates(position);
 
-    QVector2D test = position - _lastPosition;
-    test[0] = std::abs(test[0]);
-    test[1] = std::abs(test[1]);
-
-    if (test[0] > maxX)
-    {
-        maxX = test[0];
-    }
-    else if (test[0] < minX && test[0] != 0)
-    {
-        minX = test[0];
-    }
-
-    if (test[1] > maxY)
-    {
-        maxY = test[1];
-    }
-    else if (test[1] < minY && test[1] != 0)
-    {
-        minY = test[1];
-    }
-
-    //qDebug() << "maxX = " << maxX << "minX = " << minX;
-    //qDebug() << "maxY = " << maxY << "minY = " << minY;
-
     _userBat->changeCenter(position - _lastPosition);
-    _userBat->setSpeed(position - _lastPosition);
+    _userBat->setSpeed((position - _lastPosition) / USER_INPUT_FACTOR);
 
     _lastPosition = position;
 }

@@ -24,6 +24,7 @@ private:
     void calculateObjectsCollisions() const;
     void calculateWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const;
     void frictionForce() const;
+    void speedControl() const;
 
     void removeIntersections(GameObject& freeObject, const GameObject& controlledObject) const;
 

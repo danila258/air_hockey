@@ -20,6 +20,7 @@ void Physics::calulatePhysics()
     calculateObjectsCollisions();
     calculateWallsCollisions(_freeObjects, true);
     frictionForce();
+    speedControl();
 }
 
 void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const
@@ -86,7 +87,7 @@ void Physics::calculateObjectsCollisions() const
 
             if (connectedVector.length() <= freeObject->getRadius() + controlledObject->getRadius())
             {
-                removeIntersections(*freeObject, *controlledObject);
+                //removeIntersections(*freeObject, *controlledObject);
                 connectedVector = freeObject->getCenter() - controlledObject->getCenter();
 
                 QVector2D projectionOne;
@@ -107,6 +108,8 @@ void Physics::calculateObjectsCollisions() const
                 }
 
                 freeObject->setSpeed(projectionOne + projectionSecond);
+
+                qDebug() << freeObject->getSpeed();
             }
         }
     }
@@ -124,10 +127,6 @@ void Physics::frictionForce() const
 
         float forceX = cosX * FRICTION_FORCE;
         float forceY = cosY * FRICTION_FORCE;
-
-        qDebug() << cosX << ' ' << speedX << ' ' << object->getSpeed().length();
-        qDebug() << cosY << ' ' << speedY << ' ' << object->getSpeed().length();
-        qDebug() << '\n';
 
         if (std::abs(speedX) > forceX)
         {
@@ -160,6 +159,27 @@ void Physics::frictionForce() const
         {
             object->setSpeedY(ZERO);
         }
+    }
+}
+
+void Physics::speedControl() const
+{
+    for (auto&& object : _freeObjects)
+    {
+        float speedX = object->getSpeed().x();
+        float speedY = object->getSpeed().y();
+
+        if (std::abs(speedX) > MAX_SPEED)
+        {
+            speedX = (speedX > ZERO)? MAX_SPEED : -MAX_SPEED;
+        }
+
+        if (speedY > MAX_SPEED)
+        {
+            speedY = (speedY > ZERO)? MAX_SPEED : -MAX_SPEED;
+        }
+
+        object->setSpeed(speedX, speedY);
     }
 }
 
