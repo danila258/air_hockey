@@ -18,7 +18,7 @@
 #define PUCK_NUM_SEGMENTS 15
 
 #define USER_INPUT_FACTOR 2.0f
-#define MAX_SPEED 0.08f
+#define MAX_SPEED 0.07f
 
 //#define BOARD_WIDTH 0.04f
 #define MAX_INTERSECTION_PERCENT 0.96f

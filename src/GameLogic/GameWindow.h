@@ -2,13 +2,11 @@
 #define RectangleWindow_H
 
 #include "Configuration.h"
+#include "InputHandler.h"
 #include "Physics.h"
 #include "../GameObjects/CircleObject.h"
 
 #include <QOpenGLWindow>
-#include <QOpenGLVertexArrayObject>
-#include <QOpenGLBuffer>
-#include <QMouseEvent>
 #include <QDebug>
 
 
@@ -23,24 +21,13 @@ public:
 private:
     void initializeGL() override;
     void paintGL() override;
-
     void gameCycle();
-    void toGlCoordinates(QVector2D& vertex) const;
 
     QVector<GameObject*> _controlledObjects;
     QVector<GameObject*> _freeObjects;
 
-    Physics _physics;
-
-    CircleObject* _userBat;
-    QVector2D _lastPosition;
-    bool _clickFlag = false;
-
-    float maxX = 0.0;
-    float minX = 1.0;
-
-    float maxY = 0.0;
-    float minY = 1.0;
+    Physics _physics = {_controlledObjects, _freeObjects};
+    InputHandler* _inputHandler;
 
 protected:
     void mouseMoveEvent(QMouseEvent* event) override;

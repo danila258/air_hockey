@@ -108,8 +108,6 @@ void Physics::calculateObjectsCollisions() const
                 }
 
                 freeObject->setSpeed(projectionOne + projectionSecond);
-
-                qDebug() << freeObject->getSpeed();
             }
         }
     }
@@ -130,14 +128,7 @@ void Physics::frictionForce() const
 
         if (std::abs(speedX) > forceX)
         {
-            if (speedX > ZERO)
-            {
-                object->setSpeedX(speedX - forceX);
-            }
-            else
-            {
-                object->setSpeedX(speedX + forceX);
-            }
+            (speedX > ZERO) ? object->setSpeedX(speedX - forceX) : object->setSpeedX(speedX + forceX);
         }
         else
         {
@@ -146,14 +137,7 @@ void Physics::frictionForce() const
 
         if (std::abs(speedY) > forceY)
         {
-            if (speedY > ZERO)
-            {
-                object->setSpeedY(speedY - forceY);
-            }
-            else
-            {
-                object->setSpeedY(speedY + forceY);
-            }
+            (speedY > ZERO) ? object->setSpeedY(speedY - forceY) : object->setSpeedY(speedY + forceY);
         }
         else
         {
@@ -171,12 +155,12 @@ void Physics::speedControl() const
 
         if (std::abs(speedX) > MAX_SPEED)
         {
-            speedX = (speedX > ZERO)? MAX_SPEED : -MAX_SPEED;
+            speedX = (speedX > ZERO) ? MAX_SPEED : -MAX_SPEED;
         }
 
         if (speedY > MAX_SPEED)
         {
-            speedY = (speedY > ZERO)? MAX_SPEED : -MAX_SPEED;
+            speedY = (speedY > ZERO) ? MAX_SPEED : -MAX_SPEED;
         }
 
         object->setSpeed(speedX, speedY);

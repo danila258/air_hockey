@@ -21,6 +21,8 @@ set(PROJECT_SOURCES
     GameLogic/main.cpp
     GameLogic/GameWindow.cpp
     GameLogic/GameWindow.h
+    GameLogic/InputHandler.cpp
+    GameLogic/InputHandler.h
     GameLogic/ShaderProgram.cpp
     GameLogic/ShaderProgram.h
     GameLogic/Physics.cpp
