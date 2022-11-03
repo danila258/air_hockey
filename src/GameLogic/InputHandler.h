@@ -12,6 +12,7 @@
 class InputHandler
 {
 public:
+    InputHandler() = delete;
     InputHandler(CircleObject& userBat, CircleObject& puck, float width, float height);
 
     void mouseMoveEvent(QMouseEvent* event, float width, float height);

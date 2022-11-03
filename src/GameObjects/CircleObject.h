@@ -12,7 +12,7 @@ public:
     CircleObject(const QVector2D& center, const QVector2D& speed, float radius, float numSegments, bool controlledFlag);
 
     QVector2D* const getVertexArray() override;
-    const int getVertexArrayByteSize() const override;
+    int getVertexArrayByteSize() const override;
 
     void create() override;
     void render() override;

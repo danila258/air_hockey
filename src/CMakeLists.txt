@@ -27,6 +27,7 @@ set(PROJECT_SOURCES
     GameLogic/ShaderProgram.h
     GameLogic/Physics.cpp
     GameLogic/Physics.h
+    GameObjects/RenderObject.h
     GameObjects/GameObject.cpp
     GameObjects/GameObject.h
     GameObjects/CircleObject.cpp

@@ -2,16 +2,10 @@
 #define GameObject_H
 
 #include "../GameLogic/Configuration.h"
-#include "../GameLogic/ShaderProgram.h"
-
-#include <QVector>
-#include <QVector2D>
-#include <QMatrix4x4>
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
+#include "RenderObject.h"
 
 
-class GameObject
+class GameObject : public RenderObject
 {
 public:
     GameObject();
@@ -20,9 +14,8 @@ public:
 
     virtual ~GameObject();
 
-    virtual void create() = 0;
-    virtual void render() = 0;
-    void destroy();
+    void create() override = 0;
+    void render() override = 0;
 
     const QVector2D& getCenter() const;
     float getX() const;
@@ -52,27 +45,14 @@ public:
     void changeSpeed(float x, float y);
 
 protected:
-    virtual QVector2D* const getVertexArray() = 0;
-    virtual const int getVertexArrayByteSize() const = 0;
-    const QMatrix4x4& getTransform();
-
-    QOpenGLVertexArrayObject _vao;
-    QOpenGLBuffer _vbo;
-    ShaderProgram _program;
-    int _vertexArrayByteSize;
-
-    QVector<QVector2D> _vertexes;
-
-    QMatrix4x4 _transform = {1.0f, 0.0f, 0.0f, 0.0f,
-                             0.0f, 1.0f, 0.0f, 0.0f,
-                             0.0f, 0.0f, 0.0f, 0.0f,
-                             0.0f, 0.0f, 0.0f, 1.0f};
+    virtual QVector2D* const getVertexArray() override = 0;
+    virtual int getVertexArrayByteSize() const override = 0;
+    const QMatrix4x4& getTransform() override;
 
     QVector2D _center;
     QVector2D _speed;
 
     float _radius;
-    float _numSegments;
     bool _controlledFlag;
 
     QVector2D _difVector;         // = newCenter - oldCenter

@@ -1,29 +1,23 @@
 #include "GameObject.h"
 
-GameObject::GameObject() : _center(ZERO, ZERO), _difVector(_center), _speed(ZERO, ZERO), _radius(0.5), _numSegments(4),
+GameObject::GameObject() : RenderObject(4.0f), _center(ZERO, ZERO), _difVector(_center), _speed(ZERO, ZERO), _radius(0.5),
     _controlledFlag(true)
 {}
 
 GameObject::GameObject(float x, float y, float dx, float dy, float radius, float numSegments, bool controlledFlag)
-    : _center(x, y), _difVector(_center), _speed(dx, dy), _radius(radius), _numSegments(numSegments),
+    : RenderObject(numSegments), _center(x, y), _difVector(_center), _speed(dx, dy), _radius(radius),
       _controlledFlag(controlledFlag)
 {}
 
 GameObject::GameObject(const QVector2D& center, const QVector2D& speed, float radius, float numSegments,
                        bool controlledFlag)
-    : _center(center), _difVector(_center), _speed(speed), _radius(radius), _numSegments(numSegments),
+    : RenderObject(numSegments), _center(center), _difVector(_center), _speed(speed), _radius(radius),
       _controlledFlag(controlledFlag)
 {}
 
 GameObject::~GameObject()
 {
    destroy();
-}
-
-void GameObject::destroy()
-{
-    _vao.destroy();
-    _vbo.destroy();
 }
 
 const QVector2D& GameObject::getCenter() const

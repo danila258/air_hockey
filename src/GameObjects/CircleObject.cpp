@@ -26,21 +26,21 @@ QVector2D* const CircleObject::getVertexArray()
     return _vertexes.data();
 }
 
-const int CircleObject::getVertexArrayByteSize() const
+int CircleObject::getVertexArrayByteSize() const
 {
     return _numSegments * 2 * sizeof(float);
 }
 
 void CircleObject::create()
 {
-    _vertexArrayByteSize = getVertexArrayByteSize();
+    int vertexArrayByteSize = getVertexArrayByteSize();
 
     _vbo = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     _vbo.create();
     _vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
     _vbo.bind();
 
-    _vbo.allocate(getVertexArray(), _vertexArrayByteSize);
+    _vbo.allocate(getVertexArray(), vertexArrayByteSize);
 
     _vao.create();
     _vao.bind();
@@ -61,7 +61,7 @@ void CircleObject::render()
 
     _vao.bind();
 
-    glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexArrayByteSize);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, getVertexArrayByteSize());
 
     _vao.release();
 }

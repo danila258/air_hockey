@@ -10,6 +10,7 @@
 class Physics
 {
 public:
+    Physics() = delete;
     Physics(QVector<GameObject*>& controlledObjects, QVector<GameObject*>& freeObjects);
 
     void setControlledObjects(QVector<GameObject*>& controlledObjects);

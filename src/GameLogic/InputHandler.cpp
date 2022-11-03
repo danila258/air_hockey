@@ -62,7 +62,7 @@ void InputHandler::updateUserBatPosition()
 
     if ( detectPuckOnTrajectory(motionVector) )
     {
-        return;
+        //return;
     }
 
     if (_touchVertexes.first().second)
