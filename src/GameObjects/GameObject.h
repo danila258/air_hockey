@@ -1,5 +1,5 @@
-#ifndef GameObject_H
-#define GameObject_H
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
 
 #include "../GameLogic/Configuration.h"
 #include "RenderObject.h"
@@ -14,8 +14,7 @@ public:
 
     virtual ~GameObject();
 
-    void create() override = 0;
-    void render() override = 0;
+    const QMatrix4x4& getTransform() override;
 
     const QVector2D& getCenter() const;
     float getX() const;
@@ -45,19 +44,16 @@ public:
     void changeSpeed(float x, float y);
 
 protected:
-    virtual QVector2D* const getVertexArray() override = 0;
-    virtual int getVertexArrayByteSize() const override = 0;
-    const QMatrix4x4& getTransform() override;
-
     QVector2D _center;
     QVector2D _speed;
 
     float _radius;
-    bool _controlledFlag;
+    float _numSegments;
+    bool _userControllFlag;
 
     QVector2D _difVector;         // = newCenter - oldCenter
     bool _translateFlag = true;
 };
 
 
-#endif // GameObject_H
+#endif // GAMEOBJECT_H

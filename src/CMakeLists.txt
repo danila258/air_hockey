@@ -32,6 +32,8 @@ set(PROJECT_SOURCES
     GameObjects/GameObject.h
     GameObjects/CircleObject.cpp
     GameObjects/CircleObject.h
+    Decorations/RoundedLine.cpp
+    Decorations/RoundedLine.h
     )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

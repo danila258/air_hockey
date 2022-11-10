@@ -1,5 +1,5 @@
-#ifndef СircleObject_H
-#define СircleObject_H
+#ifndef CIRCLEOBJECT_H
+#define CIRCLEOBJECT_H
 
 #include "GameObject.h"
 
@@ -11,12 +11,13 @@ public:
     CircleObject(float x, float y, float dx, float dy, float radius, float numSegments, bool controlledFlag);
     CircleObject(const QVector2D& center, const QVector2D& speed, float radius, float numSegments, bool controlledFlag);
 
-    QVector2D* const getVertexArray() override;
-    int getVertexArrayByteSize() const override;
-
     void create() override;
     void render() override;
+
+private:
+    QVector2D* const getVertexArray();
+    int getVertexArrayByteSize() const;
 };
 
 
-#endif // СircleObject_H
+#endif // CIRCLEOBJECT_H

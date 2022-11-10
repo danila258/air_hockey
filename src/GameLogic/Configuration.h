@@ -1,5 +1,5 @@
-#ifndef Configuration_H
-#define Configuration_H
+#ifndef CONFIGURATION_H
+#define CONFIGURATION_H
 
 
 #define USER_BAT_CENTER_X 0.0f
@@ -33,4 +33,4 @@
 #define PI 3.1415926f
 
 
-#endif // Configuration_H
+#endif // CONFIGURATION_H

@@ -1,5 +1,5 @@
-#ifndef Physics_H
-#define Physics_H
+#ifndef PHYSICS_H
+#define PHYSICS_H
 
 #include "Configuration.h"
 #include "../GameObjects/CircleObject.h"
@@ -37,4 +37,4 @@ private:
 };
 
 
-#endif // Physics_H
+#endif // PHYSICS_H

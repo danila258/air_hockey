@@ -1,5 +1,5 @@
-#ifndef ShaderProgram_H
-#define ShaderProgram_H
+#ifndef SHADERPROGRAM_H
+#define SHADERPROGRAM_H
 
 #include <QOpenGLShaderProgram>
 #include <QString>
@@ -28,4 +28,4 @@ private:
 };
 
 
-#endif // ShaderProgram_H
+#endif // SHADERPROGRAM_H

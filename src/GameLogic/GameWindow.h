@@ -1,10 +1,11 @@
-#ifndef RectangleWindow_H
-#define RectangleWindow_H
+#ifndef GAMEWINDOW_H
+#define GAMEWINDOW_H
 
 #include "Configuration.h"
 #include "InputHandler.h"
 #include "Physics.h"
 #include "../GameObjects/CircleObject.h"
+#include "../Decorations/RoundedLine.h"
 
 #include <QOpenGLWindow>
 #include <QDebug>
@@ -25,6 +26,7 @@ private:
 
     QVector<GameObject*> _controlledObjects;
     QVector<GameObject*> _freeObjects;
+    QVector<RenderObject*> _decorations;
 
     Physics _physics = {_controlledObjects, _freeObjects};
     InputHandler* _inputHandler;
@@ -36,4 +38,4 @@ protected:
 };
 
 
-#endif // RectangleWindow_H
+#endif // GAMEWINDOW_H

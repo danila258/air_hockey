@@ -35,23 +35,27 @@ void CircleObject::create()
 {
     int vertexArrayByteSize = getVertexArrayByteSize();
 
-    _vbo = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
-    _vbo.create();
-    _vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    _vbo.bind();
+    QOpenGLVertexArrayObject* vao = new QOpenGLVertexArrayObject();
+    QOpenGLBuffer* vbo = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    _vao.push_back(vao);
+    _vbo.push_back(vbo);
 
-    _vbo.allocate(getVertexArray(), vertexArrayByteSize);
+    vbo->create();
+    vbo->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    vbo->bind();
 
-    _vao.create();
-    _vao.bind();
+    vbo->allocate(getVertexArray(), vertexArrayByteSize);
+
+    vao->create();
+    vao->bind();
 
     _program.setShaderPath(":/Shaders/pass_through.vert", ":/Shaders/simple.frag");
     _program.create();
     _program.getShaderProgram()->enableAttributeArray(0);
     _program.getShaderProgram()->setAttributeBuffer(0, GL_FLOAT, 0, 2);
 
-    _vao.release();
-    _vbo.release();
+    vao->release();
+    vbo->release();
 }
 
 void CircleObject::render()
@@ -59,9 +63,9 @@ void CircleObject::render()
     _program.getShaderProgram()->bind();
     _program.getShaderProgram()->setUniformValue("transform", getTransform());
 
-    _vao.bind();
+    _vao[0]->bind();
 
     glDrawArrays(GL_TRIANGLE_FAN, 0, getVertexArrayByteSize());
 
-    _vao.release();
+    _vao[0]->release();
 }

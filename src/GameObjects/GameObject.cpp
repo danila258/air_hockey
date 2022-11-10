@@ -1,18 +1,18 @@
 #include "GameObject.h"
 
-GameObject::GameObject() : RenderObject(4.0f), _center(ZERO, ZERO), _difVector(_center), _speed(ZERO, ZERO), _radius(0.5),
-    _controlledFlag(true)
+GameObject::GameObject() : RenderObject(), _center(ZERO, ZERO), _difVector(_center), _speed(ZERO, ZERO), _radius(0.5),
+    _numSegments(4.0f), _userControllFlag(true)
 {}
 
 GameObject::GameObject(float x, float y, float dx, float dy, float radius, float numSegments, bool controlledFlag)
-    : RenderObject(numSegments), _center(x, y), _difVector(_center), _speed(dx, dy), _radius(radius),
-      _controlledFlag(controlledFlag)
+    : RenderObject(), _center(x, y), _difVector(_center), _speed(dx, dy), _radius(radius), _numSegments(numSegments),
+      _userControllFlag(controlledFlag)
 {}
 
 GameObject::GameObject(const QVector2D& center, const QVector2D& speed, float radius, float numSegments,
                        bool controlledFlag)
-    : RenderObject(numSegments), _center(center), _difVector(_center), _speed(speed), _radius(radius),
-      _controlledFlag(controlledFlag)
+    : RenderObject(), _center(center), _difVector(_center), _speed(speed), _radius(radius), _numSegments(numSegments),
+      _userControllFlag(controlledFlag)
 {}
 
 GameObject::~GameObject()
@@ -113,7 +113,7 @@ void GameObject::changeSpeed(float x, float y)
 
 const QMatrix4x4& GameObject::getTransform()
 {
-    if (_controlledFlag)
+    if (_userControllFlag)
     {
         if (_translateFlag)
         {
