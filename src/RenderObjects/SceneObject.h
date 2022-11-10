@@ -1,7 +1,6 @@
 #ifndef SCENEOBJECT_H
 #define SCENEOBJECT_H
 
-#include "../GameLogic/Configuration.h"
 #include "RenderObject.h"
 
 
@@ -11,6 +10,8 @@ public:
     SceneObject();
     SceneObject(float x, float y, float width, float height, float radius, float numSegments);
     SceneObject(const QVector2D& center, const QVector2D& dimension, float radius,  float numSegments);
+
+    ~SceneObject() override;
 
 protected:
     void setupRenderObject();

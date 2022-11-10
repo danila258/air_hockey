@@ -23,17 +23,20 @@ set(PROJECT_SOURCES
     GameLogic/GameWindow.h
     GameLogic/InputHandler.cpp
     GameLogic/InputHandler.h
-    GameLogic/ShaderProgram.cpp
-    GameLogic/ShaderProgram.h
     GameLogic/Physics.cpp
     GameLogic/Physics.h
-    GameObjects/RenderObject.h
     GameObjects/GameObject.cpp
     GameObjects/GameObject.h
     GameObjects/CircleObject.cpp
     GameObjects/CircleObject.h
-    Decorations/RoundedLine.cpp
-    Decorations/RoundedLine.h
+    RenderObjects/RenderObject.cpp
+    RenderObjects/RenderObject.h
+    RenderObjects/ShaderProgram.cpp
+    RenderObjects/ShaderProgram.h
+    RenderObjects/SceneObject.cpp
+    RenderObjects/SceneObject.h
+    RenderObjects/Circle.cpp
+    RenderObjects/Circle.h
     )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

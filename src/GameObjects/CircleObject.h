@@ -2,6 +2,7 @@
 #define CIRCLEOBJECT_H
 
 #include "GameObject.h"
+#include "../RenderObjects/Circle.h"
 
 
 class CircleObject : public GameObject
@@ -13,10 +14,6 @@ public:
 
     void create() override;
     void render() override;
-
-private:
-    QVector2D* const getVertexArray();
-    int getVertexArrayByteSize() const;
 };
 
 

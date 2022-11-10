@@ -2,10 +2,11 @@
 #define GAMEOBJECT_H
 
 #include "../GameLogic/Configuration.h"
-#include "RenderObject.h"
+
+#include <QVector2D>
 
 
-class GameObject : public RenderObject
+class GameObject
 {
 public:
     GameObject();
@@ -14,7 +15,8 @@ public:
 
     virtual ~GameObject();
 
-    const QMatrix4x4& getTransform() override;
+    virtual void create() = 0;
+    virtual void render() = 0;
 
     const QVector2D& getCenter() const;
     float getX() const;
@@ -47,8 +49,11 @@ protected:
     QVector2D _center;
     QVector2D _speed;
 
+    float _width;
+    float _height;
     float _radius;
     float _numSegments;
+
     bool _userControllFlag;
 
     QVector2D _difVector;         // = newCenter - oldCenter

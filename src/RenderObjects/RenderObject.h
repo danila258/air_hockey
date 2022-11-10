@@ -2,7 +2,7 @@
 #define RENDEROBJECT_H
 
 #include "GameLogic/Configuration.h"
-#include "../GameLogic/ShaderProgram.h"
+#include "ShaderProgram.h"
 
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
