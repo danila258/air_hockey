@@ -1,29 +1,31 @@
 #include "Circle.h"
 
-Circle::Circle() : SceneObject(), _rotationAngle(ZERO), _fractionOfCircle(1.0f)
-{}
-
-Circle::Circle(float x, float y, float radius, float numSegments, float rotationAngle, float fractionOfCircle)
-     : SceneObject(x, y, radius * 2.0f, radius * 2.0f, radius, numSegments), _rotationAngle(rotationAngle),
-       _fractionOfCircle(fractionOfCircle)
+Circle::Circle() : RenderObject(), _rotationAngle(ZERO), _fractionOfCircle(1.0f), _numSegments(7)
 {
     setupRenderObject();
 }
 
-Circle::Circle(const QVector2D& center, float radius, float numSegments, float rotationAngle, float fractionOfCircle)
-     : SceneObject(center, {radius * 2.0f, radius * 2.0f}, radius, numSegments), _rotationAngle(rotationAngle),
-       _fractionOfCircle(fractionOfCircle)
+Circle::Circle(float x, float y, float radius, int numSegments, float rotationAngle, float fractionOfCircle)
+     : RenderObject(x, y, radius * 2.0f, radius * 2.0f, radius), _numSegments(numSegments),
+       _rotationAngle(rotationAngle), _fractionOfCircle(fractionOfCircle)
+{
+    setupRenderObject();
+}
+
+Circle::Circle(const QVector2D& center, float radius, int numSegments, float rotationAngle, float fractionOfCircle)
+     : RenderObject(center, {radius * 2.0f, radius * 2.0f}, radius), _numSegments(numSegments),
+       _rotationAngle(rotationAngle), _fractionOfCircle(fractionOfCircle)
 {
     setupRenderObject();
 }
 
 void Circle::setVertexArray()
 {
-    for(int i = 0; i < _numSegments; ++i)
+    for (int i = 0; i < _numSegments; ++i)
     {
-        float theta = (_rotationAngle / 180.0f) * PI + _fractionOfCircle * PI * float(i) / float(_numSegments);
-        float x = _radius * cos(theta);
-        float y = _radius * sin(theta);
+        float theta = (_rotationAngle / 180.0f) * PI + _fractionOfCircle * 2 * PI * float(i) / float(_numSegments);
+        float x = _radius * cos(theta) + _center.x();
+        float y = _radius * sin(theta) + _center.y();
 
         _vertexArray.emplace_back(x, y);
     }

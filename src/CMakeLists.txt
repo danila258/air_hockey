@@ -27,16 +27,22 @@ set(PROJECT_SOURCES
     GameLogic/Physics.h
     GameObjects/GameObject.cpp
     GameObjects/GameObject.h
-    GameObjects/CircleObject.cpp
-    GameObjects/CircleObject.h
-    RenderObjects/RenderObject.cpp
-    RenderObjects/RenderObject.h
+    GameObjects/Bat.cpp
+    GameObjects/Bat.h
     RenderObjects/ShaderProgram.cpp
     RenderObjects/ShaderProgram.h
     RenderObjects/SceneObject.cpp
     RenderObjects/SceneObject.h
+    RenderObjects/RenderObject.cpp
+    RenderObjects/RenderObject.h
+    RenderObjects/ComplexObject.cpp
+    RenderObjects/ComplexObject.h
+    RenderObjects/RoundedRectangle.cpp
+    RenderObjects/RoundedRectangle.h
     RenderObjects/Circle.cpp
     RenderObjects/Circle.h
+    RenderObjects/Rectangle.cpp
+    RenderObjects/Rectangle.h
     )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -1,8 +1,19 @@
 #include "RenderObject.h"
 
+RenderObject::RenderObject(const QVector2D& center, const QVector2D& dimension, float radius)
+    : SceneObject(center, dimension, radius)
+{}
+
+RenderObject::RenderObject(float x, float y, float width, float height, float radius)
+    : SceneObject(x, y, width, height, radius)
+{}
+
 RenderObject::~RenderObject()
 {
-    destroy();
+    destroy();      // that is right
+
+    delete _vbo;
+    _vbo = nullptr;
 };
 
 void RenderObject::create()
@@ -44,7 +55,7 @@ void RenderObject::render()
     }
 
     _program.getShaderProgram()->bind();
-    _program.getShaderProgram()->setUniformValue("transform", getTransform());
+    _program.getShaderProgram()->setUniformValue("transform", _transform);
 
     _vao.bind();
 
@@ -60,22 +71,16 @@ void RenderObject::destroy()
     _program.destroy();
 }
 
-const QMatrix4x4& RenderObject::getTransform()
+void RenderObject::translate(const QVector2D& center)
 {
-    return _transform;
+    qDebug() << "translate = " << center;
+
+    _center += center;
+    _transform.translate(center.x(), center.y());
 }
 
-const void RenderObject::translate(float x, float y)
+void RenderObject::setupRenderObject()
 {
-    _transform.translate(x, y);
-}
-
-const void RenderObject::translate(const QVector2D& center)
-{
-    translate(center.x(), center.y());
-}
-
-const void RenderObject::resetTranslate()
-{
-    translate(ZERO, ZERO);
+    setVertexArray();
+    setVertexArrayByteSize();
 }

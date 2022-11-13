@@ -1,7 +1,7 @@
 #ifndef INPUTHANDLER_H
 #define INPUTHANDLER_H
 
-#include "../GameObjects/CircleObject.h"
+#include "../GameObjects/Bat.h"
 
 #include <QMouseEvent>
 #include <QVector>
@@ -13,22 +13,22 @@ class InputHandler
 {
 public:
     InputHandler() = delete;
-    InputHandler(CircleObject& userBat, CircleObject& puck, float width, float height);
+    InputHandler(Bat& userBat, Bat& puck, float width, float height);
 
     void mouseMoveEvent(QMouseEvent* event, float width, float height);
     void mousePressEvent(QMouseEvent* event, float width, float height);
-    void mouseReleaseEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event, float width, float height);
 
     void updateUserBatPosition();
 
 private:
-    bool detectPuckOnTrajectory(const QVector2D& motionVector);
     QVector2D getGlCoordinates(const QVector2D& vertex) const;
 
-    CircleObject& _userBat;
-    CircleObject& _puck;
+    Bat& _userBat;
+    Bat& _puck;
 
-    QList<QPair<QVector2D, bool>> _touchVertexes;
+    QVector2D _lastPosition;
+    QVector2D _lastSpeed;
     bool _clickFlag = false;
 
     float _width;

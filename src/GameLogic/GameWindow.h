@@ -4,8 +4,7 @@
 #include "Configuration.h"
 #include "InputHandler.h"
 #include "Physics.h"
-#include "../GameObjects/CircleObject.h"
-#include "../Decorations/RoundedLine.h"
+#include "../GameObjects/Bat.h"
 
 #include <QOpenGLWindow>
 #include <QDebug>

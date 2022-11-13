@@ -2,7 +2,7 @@
 #define PHYSICS_H
 
 #include "Configuration.h"
-#include "../GameObjects/CircleObject.h"
+#include "../GameObjects/Bat.h"
 
 #include <cmath>
 

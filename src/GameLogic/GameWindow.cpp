@@ -2,21 +2,19 @@
 
 GameWindow::GameWindow()
 {
-    CircleObject* userBat = new CircleObject(USER_BAT_CENTER_X, USER_BAT_CENTER_Y, ZERO, ZERO, USER_BAT_RADIUS,
-                                              USER_BAT_NUM_SEGMENTS, true);
+    Bat* userBat = new Bat(USER_BAT_CENTER_X, USER_BAT_CENTER_Y, ZERO, ZERO, USER_BAT_RADIUS, USER_BAT_NUM_SEGMENTS,
+                           true);
 
-    CircleObject* aiBat = new CircleObject(AI_BAT_CENTER_X, AI_BAT_CENTER_Y, ZERO, ZERO, AI_BAT_RADIUS,
-                                             AI_BAT_NUM_SEGMENTS, true);
+    Bat* aiBat = new Bat(AI_BAT_CENTER_X, AI_BAT_CENTER_Y, ZERO, ZERO, AI_BAT_RADIUS, AI_BAT_NUM_SEGMENTS, true);
 
-    CircleObject* puck = new CircleObject(PUCK_CENTER_X, PUCK_CENTER_Y, ZERO, ZERO, PUCK_RADIUS, PUCK_NUM_SEGMENTS,
-                                          false);
+    Bat* puck = new Bat(PUCK_CENTER_X, PUCK_CENTER_Y, ZERO, ZERO, PUCK_RADIUS, PUCK_NUM_SEGMENTS, false);
 
-    RoundedLine* line = new RoundedLine({ZERO, ZERO}, 0.3f, 0.3f, 0.1f, 150);
+    //RoundedLine* line = new RoundedLine({ZERO, ZERO}, 0.3f, 0.3f, 0.1f, 150);
 
     _controlledObjects.push_back(userBat);
     _controlledObjects.push_back(aiBat);
     _freeObjects.push_back(puck);
-    _decorations.push_back(line);
+    //_decorations.push_back(line);
 
     _inputHandler = new InputHandler(*userBat, *puck, width(), height());
 }
@@ -34,11 +32,6 @@ GameWindow::~GameWindow()
     {
         delete object;
     }
-
-    for (auto&& object : _decorations)
-    {
-        delete object;
-    }
 }
 
 void GameWindow::initializeGL()
@@ -49,11 +42,6 @@ void GameWindow::initializeGL()
     }
 
     for (auto&& object : _freeObjects)
-    {
-        object->create();
-    }
-
-    for (auto&& object : _decorations)
     {
         object->create();
     }
@@ -81,11 +69,6 @@ void GameWindow::paintGL()
         object->render();
     }
 
-    for (auto&& object : _decorations)
-    {
-        object->render();
-    }
-
     gameCycle();
 }
 
@@ -106,5 +89,5 @@ void GameWindow::mousePressEvent(QMouseEvent* event)
 
 void GameWindow::mouseReleaseEvent(QMouseEvent* event)
 {
-    _inputHandler->mouseReleaseEvent(event);
+    _inputHandler->mouseReleaseEvent(event, width(), height());
 }

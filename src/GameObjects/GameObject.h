@@ -2,8 +2,12 @@
 #define GAMEOBJECT_H
 
 #include "../GameLogic/Configuration.h"
+#include "../RenderObjects/SceneObject.h"
 
+#include <QVector>
 #include <QVector2D>
+
+#include <QDebug>
 
 
 class GameObject
@@ -18,6 +22,8 @@ public:
     virtual void create() = 0;
     virtual void render() = 0;
 
+    void resetDifVector();   // used in Physics
+
     const QVector2D& getCenter() const;
     float getX() const;
     float getY() const;
@@ -25,8 +31,6 @@ public:
     float getRadius() const;
     int getNumSegments() const;
     const QVector2D& getSpeed() const;
-
-    void resetDifVector();
 
     void translate(const QVector2D& center);
     void translate(float x, float y);
@@ -46,6 +50,10 @@ public:
     void changeSpeed(float x, float y);
 
 protected:
+    void regularTransformations();
+
+    QVector<SceneObject*> _sceneObjects;
+
     QVector2D _center;
     QVector2D _speed;
 
@@ -54,10 +62,10 @@ protected:
     float _radius;
     float _numSegments;
 
-    bool _userControllFlag;
+    bool _userControllFlag;       // users object don't use speed
 
-    QVector2D _difVector;         // = newCenter - oldCenter
-    bool _translateFlag = true;
+    QVector2D _translateVector;   // = newCenter - oldCenter
+    bool _translateFlag = true;   // fasle = use speed, true = use translate
 };
 
 

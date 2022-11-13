@@ -12,6 +12,11 @@ void ShaderProgram::setShaderPath(const QString& vertexShaderFilePath, const QSt
    _fragmentShaderFilePath = fragmentShaderFilePath;
 }
 
+ShaderProgram::~ShaderProgram()
+{
+    destroy();
+}
+
 void ShaderProgram::create()
 {
     _program = new QOpenGLShaderProgram();

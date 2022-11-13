@@ -1,18 +1,47 @@
 #include "SceneObject.h"
 
-SceneObject::SceneObject() : _center(ZERO, ZERO), _width(0.5f), _height(0.5f), _radius(0.25f), _numSegments(4)
+SceneObject::SceneObject() : _center(ZERO, ZERO), _dimension(0.5f, 0.5f), _radius(0.25f)
 {}
 
-SceneObject::SceneObject(float x, float y, float width, float height, float radius, float numSegments)
-    : _center(x, y), _width(width), _height(height), _radius(radius), _numSegments(numSegments)
+SceneObject::SceneObject(float x, float y, float width, float height, float radius)
+    : _center(x, y), _dimension(height, width), _radius(radius)
 {}
 
-SceneObject::SceneObject(const QVector2D& center, const QVector2D& dimension, float radius,  float numSegments)
-    : _center(center), _width(dimension.x()), _height(dimension.y()), _radius(radius), _numSegments(numSegments)
+SceneObject::SceneObject(const QVector2D& center, const QVector2D& dimension, float radius)
+    : _center(center), _dimension(dimension), _radius(radius)
 {}
 
-void SceneObject::setupRenderObject()
+const QVector2D& SceneObject::center() const
 {
-    setVertexArray();
-    setVertexArrayByteSize();
+    return _center;
+}
+
+float SceneObject::x() const
+{
+    return _center.x();
+}
+
+float SceneObject::y() const
+{
+    return _center.y();
+}
+
+const QVector2D& SceneObject::dimension() const
+{
+    return _dimension;
+}
+
+float SceneObject::width() const
+{
+    return _dimension.x();
+}
+
+float SceneObject::height() const
+{
+    return _dimension.y();
+}
+
+float SceneObject::radius() const
+{
+    return _radius;
 }

@@ -1,38 +1,39 @@
 #ifndef RENDEROBJECT_H
 #define RENDEROBJECT_H
 
-#include "GameLogic/Configuration.h"
+#include "SceneObject.h"
 #include "ShaderProgram.h"
 
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QVector>
-#include <QVector2D>
 #include <QMatrix4x4>
 #include <QColor>
 
 
-class RenderObject
+class RenderObject : public SceneObject
 {
 public:
     RenderObject() = default;
+    RenderObject(float x, float y, float width, float height, float radius = ZERO);
+    RenderObject(const QVector2D& center, const QVector2D& dimension, float radius = ZERO);
 
-    virtual ~RenderObject();
+    ~RenderObject() override;
 
-    void create();
-    void render();
-    void destroy();
+    void create() override;
+    void render() override;
+    void destroy() override;
 
-    const QMatrix4x4& getTransform();
-
-    const void translate(float x, float y);
-    const void translate(const QVector2D& center);
-    const void resetTranslate();
+    void translate(const QVector2D& center) override;
 
 protected:
+    void setupRenderObject();
+
+    virtual void setVertexArray() = 0;
+    virtual void setVertexArrayByteSize() = 0;
+
     QVector<QVector2D> _vertexArray;
-    int _vertexArrayByteSize = 0;
-    QColor _color;
+    int _vertexArrayByteSize;
 
 private:
     QOpenGLVertexArrayObject _vao;

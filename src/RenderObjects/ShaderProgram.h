@@ -12,6 +12,8 @@ public:
     ShaderProgram() = default;
     ShaderProgram(const QString& vertexShaderFilePath, const QString& fragmentShaderFilePath);
 
+    ~ShaderProgram();
+
     void setShaderPath(const QString& vertexShaderFilePath, const QString& fragmentShaderFilePath);
 
 	void create();
