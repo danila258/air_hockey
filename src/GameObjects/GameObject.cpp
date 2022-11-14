@@ -118,18 +118,14 @@ void GameObject::regularTransformations()
 {
     if (_userControllFlag)
     {
-        if (_translateFlag)
-        {}
-        else
+        if ( !_translateFlag )
         {
             _translateVector = {ZERO, ZERO};
         }
     }
     else
     {
-        if (_translateFlag)
-        {}
-        else
+        if ( !_translateFlag )
         {
             _center += _speed;
             _translateVector = _speed;

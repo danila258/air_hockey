@@ -29,6 +29,7 @@ public:
 protected:
     void setupRenderObject();
 
+    virtual void userInputCheck() = 0;
     virtual void setVertexArray() = 0;
     virtual void setVertexArrayByteSize() = 0;
 

@@ -5,6 +5,8 @@
 #include "InputHandler.h"
 #include "Physics.h"
 #include "../GameObjects/Bat.h"
+#include "../RenderObjects/RoundedRectangle.h"
+#include "../RenderObjects/Rectangle.h"
 
 #include <QOpenGLWindow>
 #include <QDebug>
@@ -25,7 +27,7 @@ private:
 
     QVector<GameObject*> _controlledObjects;
     QVector<GameObject*> _freeObjects;
-    QVector<RenderObject*> _decorations;
+    QVector<SceneObject*> _decorations;
 
     Physics _physics = {_controlledObjects, _freeObjects};
     InputHandler* _inputHandler;

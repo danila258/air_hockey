@@ -19,6 +19,15 @@ Circle::Circle(const QVector2D& center, float radius, int numSegments, float rot
     setupRenderObject();
 }
 
+void Circle::userInputCheck()
+{
+    if (_radius < ZERO || _numSegments < 4.0f || _rotationAngle < ZERO || _fractionOfCircle < ZERO ||
+        _fractionOfCircle > 1.0f)
+    {
+        throw std::logic_error("incorrectly passed data to the constructor of circle");
+    }
+}
+
 void Circle::setVertexArray()
 {
     for (int i = 0; i < _numSegments; ++i)

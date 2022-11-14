@@ -13,6 +13,7 @@ public:
 
     ~Rectangle() override = default;
 
+    void userInputCheck() override;
     void setVertexArray() override;
     void setVertexArrayByteSize() override;
 

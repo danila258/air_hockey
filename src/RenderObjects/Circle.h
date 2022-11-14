@@ -14,6 +14,7 @@ public:
     ~Circle() override = default;
 
 private:
+    void userInputCheck() override;
     void setVertexArray() override;
     void setVertexArrayByteSize() override;
 

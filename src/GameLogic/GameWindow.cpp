@@ -9,12 +9,13 @@ GameWindow::GameWindow()
 
     Bat* puck = new Bat(PUCK_CENTER_X, PUCK_CENTER_Y, ZERO, ZERO, PUCK_RADIUS, PUCK_NUM_SEGMENTS, false);
 
-    //RoundedLine* line = new RoundedLine({ZERO, ZERO}, 0.3f, 0.3f, 0.1f, 150);
+    //RoundedRectangle* line = new RoundedRectangle(0.3f, 0.3f, 0.2f, 0.2f, 0.05f, 10);
+    Rectangle* line = new Rectangle(0.5f, ZERO, 0.2f, 0.2f);
 
     _controlledObjects.push_back(userBat);
     _controlledObjects.push_back(aiBat);
     _freeObjects.push_back(puck);
-    //_decorations.push_back(line);
+    _decorations.push_back(line);
 
     _inputHandler = new InputHandler(*userBat, *puck, width(), height());
 }
@@ -32,6 +33,11 @@ GameWindow::~GameWindow()
     {
         delete object;
     }
+
+    for (auto&& object : _decorations)
+    {
+        delete object;
+    }
 }
 
 void GameWindow::initializeGL()
@@ -42,6 +48,11 @@ void GameWindow::initializeGL()
     }
 
     for (auto&& object : _freeObjects)
+    {
+        object->create();
+    }
+
+    for (auto&& object : _decorations)
     {
         object->create();
     }
@@ -65,6 +76,11 @@ void GameWindow::paintGL()
     }
 
     for (auto&& object : _freeObjects)
+    {
+        object->render();
+    }
+
+    for (auto&& object : _decorations)
     {
         object->render();
     }

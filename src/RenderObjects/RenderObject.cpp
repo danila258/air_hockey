@@ -24,14 +24,12 @@ void RenderObject::create()
     _vbo->setUsagePattern(QOpenGLBuffer::StaticDraw);
     _vbo->bind();
 
-    if (_vertexArrayByteSize != 0)
+    if (_vertexArrayByteSize == 0)
     {
-        _vbo->allocate(_vertexArray.data(), _vertexArrayByteSize);
+        throw std::logic_error("_vertexArrayByteSize == 0 in create method");
     }
-    else
-    {
-        throw std::logic_error("_vertexArrayByteSize == 0");
-    }
+
+    _vbo->allocate(_vertexArray.data(), _vertexArrayByteSize);
 
     _vao.create();
     _vao.bind();
@@ -62,6 +60,7 @@ void RenderObject::render()
     glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexArrayByteSize);
 
     _vao.release();
+    _program.getShaderProgram()->release();
 }
 
 void RenderObject::destroy()
@@ -73,14 +72,13 @@ void RenderObject::destroy()
 
 void RenderObject::translate(const QVector2D& center)
 {
-    qDebug() << "translate = " << center;
-
     _center += center;
     _transform.translate(center.x(), center.y());
 }
 
 void RenderObject::setupRenderObject()
 {
+    userInputCheck();
     setVertexArray();
     setVertexArrayByteSize();
 }
