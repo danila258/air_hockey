@@ -18,6 +18,7 @@ public:
     ~RoundedRectangle() override = default;
 
 protected:
+    void userInputCheck();
     void setupSceneObjects();
 
     float _roundingRadius;

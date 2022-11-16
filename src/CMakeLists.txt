@@ -43,6 +43,8 @@ set(PROJECT_SOURCES
     RenderObjects/Circle.h
     RenderObjects/Rectangle.cpp
     RenderObjects/Rectangle.h
+    RenderObjects/Ring.cpp
+    RenderObjects/Ring.h
     )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -57,7 +57,7 @@ void RenderObject::render()
 
     _vao.bind();
 
-    glDrawArrays(GL_TRIANGLE_FAN, 0, _vertexArrayByteSize);
+    glDrawArrays(GL_TRIANGLES, 0, _vertexArrayByteSize);
 
     _vao.release();
     _program.getShaderProgram()->release();

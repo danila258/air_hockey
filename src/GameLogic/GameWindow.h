@@ -6,7 +6,7 @@
 #include "Physics.h"
 #include "../GameObjects/Bat.h"
 #include "../RenderObjects/RoundedRectangle.h"
-#include "../RenderObjects/Rectangle.h"
+#include "../RenderObjects/Ring.h"
 
 #include <QOpenGLWindow>
 #include <QDebug>

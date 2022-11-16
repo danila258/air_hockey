@@ -50,7 +50,7 @@ void Bat::render()
 
 void Bat::setupSceneObjects()
 {
-    _sceneObjects.push_back( new Circle({0.2f, 0.2f}, _radius, _numSegments, ZERO, 1.0f) );
+    _sceneObjects.push_back( new Circle(ZERO, ZERO, _radius, ZERO, 1.0f, _numSegments) );
 }
 
 void Bat::customTransformations()

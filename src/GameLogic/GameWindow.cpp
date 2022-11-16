@@ -9,8 +9,7 @@ GameWindow::GameWindow()
 
     Bat* puck = new Bat(PUCK_CENTER_X, PUCK_CENTER_Y, ZERO, ZERO, PUCK_RADIUS, PUCK_NUM_SEGMENTS, false);
 
-    //RoundedRectangle* line = new RoundedRectangle(0.3f, 0.3f, 0.2f, 0.2f, 0.05f, 10);
-    Rectangle* line = new Rectangle(0.5f, ZERO, 0.2f, 0.2f);
+    Ring* line = new Ring(0.5f, 0.3f, 0.3f, 0.2f, ZERO, 0.25f, 4);
 
     _controlledObjects.push_back(userBat);
     _controlledObjects.push_back(aiBat);
