@@ -8,9 +8,9 @@ class Ring : public RenderObject
 {
 public:
     Ring();
-    Ring(float x, float y, float radiusOne, float radiusTwo, float rotationAngle, float fractionOfCircle,
+    Ring(float x, float y, float bigRadius, float smallRadius, float rotationAngle, float fractionOfCircle,
          int numSegments);
-    Ring(const QVector2D& center, float radiusOne, float radiusTwo, float rotationAngle, float fractionOfCircle,
+    Ring(const QVector2D& center, float bigRadius, float smallRadius, float rotationAngle, float fractionOfCircle,
          int numSegments);
 
     ~Ring() override = default;

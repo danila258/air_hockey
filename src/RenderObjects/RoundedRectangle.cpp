@@ -72,7 +72,7 @@ void RoundedRectangle::setupSceneObjects()
                                             width() - 2 * _roundingRadius,
                                             _roundingRadius);
 
-    Rectangle* middleRectangle = new Rectangle(_center, {width(), height() - 2.0f * _roundingRadius});
+    Rectangle* middleRectangle = new Rectangle(_center.x(), _center.y(), width(), height() - 2.0f * _roundingRadius);
 
     Rectangle* bottomRectangle = new Rectangle(x(),
                                                y() - height() / 2.0f + _roundingRadius / 2.0f,

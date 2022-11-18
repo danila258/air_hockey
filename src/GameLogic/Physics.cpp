@@ -29,9 +29,9 @@ void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeOb
     {
         QVector2D newCenter = object->getCenter();
 
-        if (object->getX() + object->getRadius() > MAX_X)
+        if (object->getX() + object->getRadius() > MAX_X - (WALL_OFFSET + WALL_WIDTH))
         {
-            newCenter[0] = MAX_X - object->getRadius();
+            newCenter[0] = MAX_X - (WALL_OFFSET + WALL_WIDTH) - object->getRadius();
 
             if (freeObjectsFlag)
             {
@@ -39,9 +39,9 @@ void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeOb
             }
         }
 
-        if (object->getX() - object->getRadius() < MIN_X)
+        if (object->getX() - object->getRadius() < MIN_X + (WALL_OFFSET + WALL_WIDTH))
         {
-            newCenter[0] = MIN_X + object->getRadius();
+            newCenter[0] = MIN_X + (WALL_OFFSET + WALL_WIDTH) + object->getRadius();
 
             if (freeObjectsFlag)
             {
@@ -49,9 +49,9 @@ void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeOb
             }
         }
 
-        if (object->getY() + object->getRadius() > MAX_Y)
+        if (object->getY() + object->getRadius() > MAX_Y - (WALL_OFFSET + WALL_WIDTH))
         {
-            newCenter[1] = MAX_Y - object->getRadius();
+            newCenter[1] = MAX_Y - (WALL_OFFSET + WALL_WIDTH) - object->getRadius();
 
             if (freeObjectsFlag)
             {
@@ -59,9 +59,9 @@ void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeOb
             }
         }
 
-        if (object->getY() - object->getRadius() < MIN_Y)
+        if (object->getY() - object->getRadius() < MIN_Y + (WALL_OFFSET + WALL_WIDTH))
         {
-            newCenter[1] = MIN_Y + object->getRadius();
+            newCenter[1] = MIN_Y + (WALL_OFFSET + WALL_WIDTH) + object->getRadius();
 
             if (freeObjectsFlag)
             {

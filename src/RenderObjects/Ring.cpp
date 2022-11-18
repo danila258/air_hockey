@@ -6,18 +6,18 @@ Ring::Ring() : RenderObject(), _bigRadius(0.5f), _smallRadius(0.3f), _rotationAn
     setupRenderObject();
 }
 
-Ring::Ring(float x, float y, float radiusOne, float radiusTwo, float rotationAngle, float fractionOfCircle,
+Ring::Ring(float x, float y, float bigRadius, float smallRadius, float rotationAngle, float fractionOfCircle,
            int numSegments)
-    : RenderObject(x, y, radiusOne * 2.0f, radiusOne * 2.0f, radiusOne), _bigRadius(radiusOne), _smallRadius(radiusTwo),
+    : RenderObject(x, y, bigRadius * 2.0f, bigRadius * 2.0f, bigRadius), _bigRadius(bigRadius), _smallRadius(smallRadius),
     _rotationAngle(rotationAngle), _fractionOfCircle(fractionOfCircle), _numSegments(numSegments)
 {
     setupRenderObject();
 }
 
-Ring::Ring(const QVector2D& center, float radiusOne, float radiusTwo, float rotationAngle, float fractionOfCircle,
+Ring::Ring(const QVector2D& center, float bigRadius, float smallRadius, float rotationAngle, float fractionOfCircle,
            int numSegments)
-    : RenderObject(center, {radiusOne * 2.0f, radiusOne * 2.0f}, radiusOne), _bigRadius(radiusOne),
-      _smallRadius(radiusTwo), _rotationAngle(rotationAngle), _fractionOfCircle(fractionOfCircle),
+    : RenderObject(center, {bigRadius * 2.0f, bigRadius * 2.0f}, bigRadius), _bigRadius(bigRadius),
+      _smallRadius(smallRadius), _rotationAngle(rotationAngle), _fractionOfCircle(fractionOfCircle),
       _numSegments(numSegments)
 {
     setupRenderObject();

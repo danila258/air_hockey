@@ -27,16 +27,19 @@ void Rectangle::setVertexArray()
 {
     float localWidth, localHeight;
 
-    if ( height() > width() )
-    {
-        localWidth = height();
-        localHeight = width();
-    }
-    else
-    {
-        localWidth = width();
-        localHeight = height();
-    }
+//    if ( height() > width() )
+//    {
+//        localWidth = height();
+//        localHeight = width();
+//    }
+//    else
+//    {
+//        localWidth = width();
+//        localHeight = height();
+//    }
+
+    localWidth = width();
+    localHeight = height();
 
     // triangle 1
 

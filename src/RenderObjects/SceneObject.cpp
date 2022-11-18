@@ -4,7 +4,7 @@ SceneObject::SceneObject() : _center(ZERO, ZERO), _dimension(0.5f, 0.5f), _radiu
 {}
 
 SceneObject::SceneObject(float x, float y, float width, float height, float radius)
-    : _center(x, y), _dimension(height, width), _radius(radius)
+    : _center(x, y), _dimension(width, height), _radius(radius)
 {}
 
 SceneObject::SceneObject(const QVector2D& center, const QVector2D& dimension, float radius)
