@@ -14,9 +14,11 @@
 class RenderObject : public SceneObject
 {
 public:
-    RenderObject() = default;
-    RenderObject(float x, float y, float width, float height, float radius = ZERO);
-    RenderObject(const QVector2D& center, const QVector2D& dimension, float radius = ZERO);
+    RenderObject();
+    RenderObject(float x, float y, float width, float height, float radius = ZERO,
+                 const QVector3D& color = {1.0f, 1.0f, 1.0f});
+    RenderObject(const QVector2D& center, const QVector2D& dimension, float radius = ZERO,
+                 const QVector3D& color = {1.0f, 1.0f, 1.0f});
 
     ~RenderObject() override;
 
@@ -40,6 +42,8 @@ private:
     QOpenGLVertexArrayObject _vao;
     QOpenGLBuffer* _vbo;
     ShaderProgram _program;
+
+    QVector3D _color;
 
     QMatrix4x4 _transform = {1.0f, 0.0f, 0.0f, 0.0f,
                              0.0f, 1.0f, 0.0f, 0.0f,

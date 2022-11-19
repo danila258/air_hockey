@@ -1,11 +1,14 @@
 #include "RenderObject.h"
 
-RenderObject::RenderObject(const QVector2D& center, const QVector2D& dimension, float radius)
-    : SceneObject(center, dimension, radius)
+RenderObject::RenderObject() : _color(1.0f, 1.0f, 1.0f)
 {}
 
-RenderObject::RenderObject(float x, float y, float width, float height, float radius)
-    : SceneObject(x, y, width, height, radius)
+RenderObject::RenderObject(const QVector2D& center, const QVector2D& dimension, float radius, const QVector3D& color)
+    : SceneObject(center, dimension, radius), _color(color)
+{}
+
+RenderObject::RenderObject(float x, float y, float width, float height, float radius, const QVector3D& color)
+    : SceneObject(x, y, width, height, radius), _color(color)
 {}
 
 RenderObject::~RenderObject()
@@ -36,6 +39,7 @@ void RenderObject::create()
 
     _program.setShaderPath(":/Shaders/pass_through.vert", ":/Shaders/simple.frag");
     _program.create();
+
     _program.getShaderProgram()->enableAttributeArray(0);
     _program.getShaderProgram()->setAttributeBuffer(0, GL_FLOAT, 0, 2);
 

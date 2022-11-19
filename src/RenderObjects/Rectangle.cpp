@@ -25,43 +25,27 @@ void Rectangle::userInputCheck()
 
 void Rectangle::setVertexArray()
 {
-    float localWidth, localHeight;
-
-//    if ( height() > width() )
-//    {
-//        localWidth = height();
-//        localHeight = width();
-//    }
-//    else
-//    {
-//        localWidth = width();
-//        localHeight = height();
-//    }
-
-    localWidth = width();
-    localHeight = height();
-
     // triangle 1
 
     // left top vertex
-    _vertexArray.emplace_back(x() - localWidth / 2.0f, y() + localHeight / 2.0f);
+    _vertexArray.emplace_back(x() - width() / 2.0f, y() + height() / 2.0f);
 
     // left bottom vertex
-    _vertexArray.emplace_back(x() - localWidth / 2.0f, y() - localHeight / 2.0f);
+    _vertexArray.emplace_back(x() - width() / 2.0f, y() - height() / 2.0f);
 
     // right bottom vertex
-    _vertexArray.emplace_back(x() + localWidth / 2.0f, y() - localHeight / 2.0f);
+    _vertexArray.emplace_back(x() + width() / 2.0f, y() - height() / 2.0f);
 
     // triangle 2
 
     // right top vertex
-    _vertexArray.emplace_back(x() + localWidth / 2.0f, y() + localHeight / 2.0f);
+    _vertexArray.emplace_back(x() + width() / 2.0f, y() + height() / 2.0f);
 
     // left top vertex
-    _vertexArray.emplace_back(x() - localWidth / 2.0f, y() + localHeight / 2.0f);
+    _vertexArray.emplace_back(x() - width() / 2.0f, y() + height() / 2.0f);
 
     // right bottom vertex
-    _vertexArray.emplace_back(x() + localWidth / 2.0f, y() - localHeight / 2.0f);
+    _vertexArray.emplace_back(x() + width() / 2.0f, y() - height() / 2.0f);
 }
 
 void Rectangle::setVertexArrayByteSize()

@@ -174,8 +174,8 @@ void GameWindow::paintGL()
     _inputHandler->updateUserBatPosition();
     _physics.calulatePhysics();
 
-    glClearColor(0.4f, 0.3f, 0.2f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     const qreal retinaScale = devicePixelRatio();                       // needed for Macs with retina display
     glViewport(0, 0, width() * retinaScale, height() * retinaScale);
