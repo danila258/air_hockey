@@ -43,8 +43,6 @@ private:
     QOpenGLBuffer* _vbo;
     ShaderProgram _program;
 
-    QVector3D _color;
-
     QMatrix4x4 _transform = {1.0f, 0.0f, 0.0f, 0.0f,
                              0.0f, 1.0f, 0.0f, 0.0f,
                              0.0f, 0.0f, 0.0f, 0.0f,

@@ -5,17 +5,18 @@
 #include "../RenderObjects/SceneObject.h"
 
 #include <QVector>
+#include <QVector3D>
 #include <QVector2D>
-
-#include <QDebug>
 
 
 class GameObject
 {
 public:
     GameObject();
-    GameObject(float x, float y, float dx, float dy, float radius, float numSegments, bool controlledFlag);
-    GameObject(const QVector2D& center, const QVector2D& speed, float radius,  float numSegments, bool controlledFlag);
+    GameObject(float x, float y, float dx, float dy, float radius, float numSegments, const QVector3D& color,
+               bool controlledFlag);
+    GameObject(const QVector2D& center, const QVector2D& speed, float radius,  float numSegments,
+               const QVector3D& color, bool controlledFlag);
 
     virtual ~GameObject();
 
@@ -61,6 +62,8 @@ protected:
     float _height;
     float _radius;
     float _numSegments;
+
+    QVector3D _color;
 
     bool _userControllFlag;       // users object don't use speed
 

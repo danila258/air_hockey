@@ -5,12 +5,14 @@ Rectangle::Rectangle() : RenderObject()
     setupRenderObject();
 }
 
-Rectangle::Rectangle(float x, float y, float width, float height) : RenderObject(x, y, width, height)
+Rectangle::Rectangle(float x, float y, float width, float height, const QVector3D& color)
+    : RenderObject(x, y, width, height, ZERO, color)
 {
     setupRenderObject();
 }
 
-Rectangle::Rectangle(const QVector2D& center, const QVector2D& dimension) : RenderObject(center, dimension)
+Rectangle::Rectangle(const QVector2D& center, const QVector2D& dimension, const QVector3D& color)
+    : RenderObject(center, dimension, ZERO, color)
 {
     setupRenderObject();
 }

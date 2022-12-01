@@ -3,13 +3,13 @@
 ComplexObject::ComplexObject() : SceneObject()
 {}
 
-ComplexObject::ComplexObject(float x, float y, float width, float height, float radius)
-    : SceneObject(x, y, width, height, radius)
+ComplexObject::ComplexObject(float x, float y, float width, float height, float radius, const QVector3D& color)
+    : SceneObject(x, y, width, height, radius, color)
 
 {}
 
-ComplexObject::ComplexObject(const QVector2D& center, const QVector2D& dimension, float radius)
-    : SceneObject(center, dimension, radius)
+ComplexObject::ComplexObject(const QVector2D& center, const QVector2D& dimension, float radius, const QVector3D& color)
+    : SceneObject(center, dimension, radius, color)
 {}
 
 ComplexObject::~ComplexObject()

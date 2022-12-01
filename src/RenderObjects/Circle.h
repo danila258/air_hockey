@@ -8,8 +8,10 @@ class Circle : public RenderObject
 {
 public:
     Circle();
-    Circle(float x, float y, float radius, float rotationAngle, float fractionOfCircle, int numSegments);
-    Circle(const QVector2D& center, float radius, float rotationAngle, float fractionOfCircle, int numSegments);
+    Circle(float x, float y, float radius, float rotationAngle, float fractionOfCircle, int numSegments,
+           const QVector3D& color);
+    Circle(const QVector2D& center, float radius, float rotationAngle, float fractionOfCircle, int numSegments,
+           const QVector3D& color);
 
     ~Circle() override = default;
 

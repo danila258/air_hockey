@@ -7,16 +7,17 @@ Ring::Ring() : RenderObject(), _bigRadius(0.5f), _smallRadius(0.3f), _rotationAn
 }
 
 Ring::Ring(float x, float y, float bigRadius, float smallRadius, float rotationAngle, float fractionOfCircle,
-           int numSegments)
-    : RenderObject(x, y, bigRadius * 2.0f, bigRadius * 2.0f, bigRadius), _bigRadius(bigRadius), _smallRadius(smallRadius),
-    _rotationAngle(rotationAngle), _fractionOfCircle(fractionOfCircle), _numSegments(numSegments)
+           int numSegments, const QVector3D& color)
+    : RenderObject(x, y, bigRadius * 2.0f, bigRadius * 2.0f, bigRadius, color), _bigRadius(bigRadius),
+      _smallRadius(smallRadius), _rotationAngle(rotationAngle), _fractionOfCircle(fractionOfCircle),
+      _numSegments(numSegments)
 {
     setupRenderObject();
 }
 
 Ring::Ring(const QVector2D& center, float bigRadius, float smallRadius, float rotationAngle, float fractionOfCircle,
-           int numSegments)
-    : RenderObject(center, {bigRadius * 2.0f, bigRadius * 2.0f}, bigRadius), _bigRadius(bigRadius),
+           int numSegments, const QVector3D& color)
+    : RenderObject(center, {bigRadius * 2.0f, bigRadius * 2.0f}, bigRadius, color), _bigRadius(bigRadius),
       _smallRadius(smallRadius), _rotationAngle(rotationAngle), _fractionOfCircle(fractionOfCircle),
       _numSegments(numSegments)
 {

@@ -10,8 +10,8 @@ class SceneObject
 {
 public:
     SceneObject();
-    SceneObject(float x, float y, float width, float height, float radius = ZERO);
-    SceneObject(const QVector2D& center, const QVector2D& dimension, float radius = ZERO);
+    SceneObject(float x, float y, float width, float height, float radius, const QVector3D& color);
+    SceneObject(const QVector2D& center, const QVector2D& dimension, float radius, const QVector3D& color);
 
     virtual ~SceneObject() = default;
 
@@ -34,6 +34,7 @@ public:
 protected:
     QVector2D _center;
     QVector2D _dimension;
+    QVector3D _color;
 
     float _radius;
 };

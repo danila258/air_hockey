@@ -1,14 +1,14 @@
 #include "SceneObject.h"
 
-SceneObject::SceneObject() : _center(ZERO, ZERO), _dimension(0.5f, 0.5f), _radius(0.25f)
+SceneObject::SceneObject() : _center(ZERO, ZERO), _dimension(0.5f, 0.5f), _radius(0.25f), _color(1.0f, 1.0f, 1.0f)
 {}
 
-SceneObject::SceneObject(float x, float y, float width, float height, float radius)
-    : _center(x, y), _dimension(width, height), _radius(radius)
+SceneObject::SceneObject(float x, float y, float width, float height, float radius, const QVector3D& color)
+    : _center(x, y), _dimension(width, height), _radius(radius), _color(color)
 {}
 
-SceneObject::SceneObject(const QVector2D& center, const QVector2D& dimension, float radius)
-    : _center(center), _dimension(dimension), _radius(radius)
+SceneObject::SceneObject(const QVector2D& center, const QVector2D& dimension, float radius, const QVector3D& color)
+    : _center(center), _dimension(dimension), _radius(radius), _color(color)
 {}
 
 const QVector2D& SceneObject::center() const

@@ -9,9 +9,9 @@ class Ring : public RenderObject
 public:
     Ring();
     Ring(float x, float y, float bigRadius, float smallRadius, float rotationAngle, float fractionOfCircle,
-         int numSegments);
+         int numSegments, const QVector3D& color);
     Ring(const QVector2D& center, float bigRadius, float smallRadius, float rotationAngle, float fractionOfCircle,
-         int numSegments);
+         int numSegments, const QVector3D& color);
 
     ~Ring() override = default;
 

@@ -5,15 +5,14 @@ Bat::Bat() : GameObject()
     setupSceneObjects();
 }
 
-Bat::Bat(float x, float y, float dx, float dy, float radius, float numSegments, bool controlledFlag) :
-    GameObject(x, y, dx, dy, radius, numSegments, controlledFlag)
+Bat::Bat(float x, float y, float dx, float dy, float radius, float numSegments, const QVector3D& color,
+         bool controlledFlag) : GameObject(x, y, dx, dy, radius, numSegments, color, controlledFlag)
 {
     setupSceneObjects();
 }
 
-Bat::Bat(const QVector2D& center, const QVector2D& speed, float radius, float numSegments,
-                           bool controlledFlag) :
-    GameObject(center, speed, radius, numSegments, controlledFlag)
+Bat::Bat(const QVector2D& center, const QVector2D& speed, float radius, float numSegments, const QVector3D& color,
+         bool controlledFlag) : GameObject(center, speed, radius, numSegments, color, controlledFlag)
 {
     setupSceneObjects();
 }
@@ -50,7 +49,7 @@ void Bat::render()
 
 void Bat::setupSceneObjects()
 {
-    _sceneObjects.push_back( new Circle(ZERO, ZERO, _radius, ZERO, 1.0f, _numSegments) );
+    _sceneObjects.push_back( new Circle(ZERO, ZERO, _radius, ZERO, 1.0f, _numSegments, _color) );
 }
 
 void Bat::customTransformations()

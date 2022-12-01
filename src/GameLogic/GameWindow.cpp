@@ -3,9 +3,11 @@
 GameWindow::GameWindow()
 {
     Bat* userBat = new Bat(USER_BAT_CENTER_X, USER_BAT_CENTER_Y, ZERO, ZERO, USER_BAT_RADIUS, USER_BAT_NUM_SEGMENTS,
-                           true);
-    Bat* aiBat = new Bat(AI_BAT_CENTER_X, AI_BAT_CENTER_Y, ZERO, ZERO, AI_BAT_RADIUS, AI_BAT_NUM_SEGMENTS, true);
-    Bat* puck = new Bat(PUCK_CENTER_X, PUCK_CENTER_Y, ZERO, ZERO, PUCK_RADIUS, PUCK_NUM_SEGMENTS, false);
+                           USER_BAT_COLOR, true);
+    Bat* aiBat = new Bat(AI_BAT_CENTER_X, AI_BAT_CENTER_Y, ZERO, ZERO, AI_BAT_RADIUS, AI_BAT_NUM_SEGMENTS, AI_BAT_COLOR,
+                         true);
+    Bat* puck = new Bat(PUCK_CENTER_X, PUCK_CENTER_Y, ZERO, ZERO, PUCK_RADIUS, PUCK_NUM_SEGMENTS, PUCK_COLOR,
+                        false);
 
     _controlledObjects.push_back(userBat);
     _controlledObjects.push_back(aiBat);
@@ -14,20 +16,22 @@ GameWindow::GameWindow()
     _inputHandler = new InputHandler(*userBat, *puck, width(), height());
 
     Ring* topRightRounding = new Ring(MAX_X - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
-                                  MAX_Y - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
-                                  WALL_ROUNDING_RADIUS + WALL_WIDTH,
-                                  WALL_ROUNDING_RADIUS,
-                                  ZERO,
-                                  0.25f,
-                                  WALL_ROUNDING_NUM_SEGMENTS);
+                                      MAX_Y - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
+                                      WALL_ROUNDING_RADIUS + WALL_WIDTH,
+                                      WALL_ROUNDING_RADIUS,
+                                      ZERO,
+                                      0.25f,
+                                      WALL_ROUNDING_NUM_SEGMENTS,
+                                      WALL_ROUNDING_COLOR);
 
     Ring* topLeftRounding = new Ring(MIN_X + WALL_OFFSET + WALL_WIDTH + WALL_ROUNDING_RADIUS,
-                                 MAX_Y - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
-                                 WALL_ROUNDING_RADIUS + WALL_WIDTH,
-                                 WALL_ROUNDING_RADIUS,
-                                 90.0f,
-                                 0.25f,
-                                 WALL_ROUNDING_NUM_SEGMENTS);
+                                     MAX_Y - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
+                                     WALL_ROUNDING_RADIUS + WALL_WIDTH,
+                                     WALL_ROUNDING_RADIUS,
+                                     90.0f,
+                                     0.25f,
+                                     WALL_ROUNDING_NUM_SEGMENTS,
+                                     WALL_ROUNDING_COLOR);
 
     Ring* bottomLeftRounding = new Ring(MIN_X + WALL_OFFSET + WALL_WIDTH + WALL_ROUNDING_RADIUS,
                                         MIN_Y + WALL_OFFSET + WALL_WIDTH + WALL_ROUNDING_RADIUS,
@@ -35,7 +39,8 @@ GameWindow::GameWindow()
                                         WALL_ROUNDING_RADIUS,
                                         180.0f,
                                         0.25f,
-                                        WALL_ROUNDING_NUM_SEGMENTS);
+                                        WALL_ROUNDING_NUM_SEGMENTS,
+                                        WALL_ROUNDING_COLOR);
 
     Ring* bottomRightRounding = new Ring(MAX_X - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
                                          MIN_Y + WALL_OFFSET + WALL_WIDTH + WALL_ROUNDING_RADIUS,
@@ -43,7 +48,8 @@ GameWindow::GameWindow()
                                          WALL_ROUNDING_RADIUS,
                                          270.f,
                                          0.25f,
-                                         WALL_ROUNDING_NUM_SEGMENTS);
+                                         WALL_ROUNDING_NUM_SEGMENTS,
+                                         WALL_ROUNDING_COLOR);
 
     _decorations.push_back(topRightRounding);
     _decorations.push_back(topLeftRounding);
@@ -56,7 +62,8 @@ GameWindow::GameWindow()
                                                               WALL_WIDTH,
                                                               MAX_Y - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
                                                               WALL_RECTANGLE_RADIUS,
-                                                              WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS);
+                                                              WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS,
+                                                              WALL_COLOR);
 
     RoundedRectangle* bottomRightRectagle = new RoundedRectangle(MAX_X - WALL_OFFSET - WALL_WIDTH / 2.0f,
                                                                  (MIN_Y + WALL_OFFSET + WALL_WIDTH
@@ -65,7 +72,8 @@ GameWindow::GameWindow()
                                                                  MAX_Y - WALL_OFFSET - WALL_WIDTH
                                                                  - WALL_ROUNDING_RADIUS,
                                                                  WALL_RECTANGLE_RADIUS,
-                                                                 WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS);
+                                                                 WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS,
+                                                                 WALL_COLOR);
 
     RoundedRectangle* topLeftRectagle = new RoundedRectangle(MIN_X + WALL_OFFSET + WALL_WIDTH / 2.0f,
                                                              (MAX_Y - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS)
@@ -73,7 +81,8 @@ GameWindow::GameWindow()
                                                              WALL_WIDTH,
                                                              MAX_Y - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
                                                              WALL_RECTANGLE_RADIUS,
-                                                             WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS);
+                                                             WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS,
+                                                             WALL_COLOR);
 
     RoundedRectangle* bottomLeftRectagle = new RoundedRectangle(MIN_X + WALL_OFFSET + WALL_WIDTH / 2.0f,
                                                                 (MIN_Y + WALL_OFFSET + WALL_WIDTH
@@ -81,7 +90,8 @@ GameWindow::GameWindow()
                                                                 WALL_WIDTH,
                                                                 MAX_Y - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
                                                                 WALL_RECTANGLE_RADIUS,
-                                                                WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS);
+                                                                WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS,
+                                                                WALL_COLOR);
 
     _decorations.push_back(topRightRectagle);
     _decorations.push_back(bottomRightRectagle);
@@ -95,7 +105,8 @@ GameWindow::GameWindow()
                                                          - WALL_ROUNDING_RADIUS,
                                                          WALL_WIDTH,
                                                          WALL_RECTANGLE_RADIUS,
-                                                         WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS);
+                                                         WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS,
+                                                         WALL_COLOR);
 
     RoundedRectangle* topLeftRod = new RoundedRectangle((MIN_X - GATE_WIDTH / 2.0f + WALL_WIDTH + WALL_OFFSET
                                                         + WALL_ROUNDING_RADIUS) / 2.0f,
@@ -104,7 +115,8 @@ GameWindow::GameWindow()
                                                         - WALL_ROUNDING_RADIUS,
                                                         WALL_WIDTH,
                                                         WALL_RECTANGLE_RADIUS,
-                                                        WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS);
+                                                        WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS,
+                                                        WALL_COLOR);
 
     RoundedRectangle* bottomLeftRod = new RoundedRectangle((MIN_X - GATE_WIDTH / 2.0f + WALL_WIDTH + WALL_OFFSET
                                                            + WALL_ROUNDING_RADIUS) / 2.0f,
@@ -113,7 +125,8 @@ GameWindow::GameWindow()
                                                            - WALL_ROUNDING_RADIUS,
                                                            WALL_WIDTH,
                                                            WALL_RECTANGLE_RADIUS,
-                                                           WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS);
+                                                           WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS,
+                                                           WALL_COLOR);
 
     RoundedRectangle* bottomRightRod = new RoundedRectangle((MAX_X + GATE_WIDTH / 2.0f - WALL_WIDTH - WALL_OFFSET
                                                             - WALL_ROUNDING_RADIUS) / 2.0f,
@@ -122,7 +135,8 @@ GameWindow::GameWindow()
                                                             - WALL_ROUNDING_RADIUS,
                                                             WALL_WIDTH,
                                                             WALL_RECTANGLE_RADIUS,
-                                                            WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS);
+                                                            WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS,
+                                                            WALL_COLOR);
 
     _decorations.push_back(topRightRod);
     _decorations.push_back(topLeftRod);
@@ -174,7 +188,7 @@ void GameWindow::paintGL()
     _inputHandler->updateUserBatPosition();
     _physics.calulatePhysics();
 
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.2f,   0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     const qreal retinaScale = devicePixelRatio();                       // needed for Macs with retina display

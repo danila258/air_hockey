@@ -9,8 +9,10 @@ class Bat : public GameObject
 {
 public:
     Bat();
-    Bat(float x, float y, float dx, float dy, float radius, float numSegments, bool controlledFlag);
-    Bat(const QVector2D& center, const QVector2D& speed, float radius, float numSegments, bool controlledFlag);
+    Bat(float x, float y, float dx, float dy, float radius, float numSegments, const QVector3D& color,
+        bool controlledFlag);
+    Bat(const QVector2D& center, const QVector2D& speed, float radius, float numSegments, const QVector3D& color,
+        bool controlledFlag);
 
     ~Bat() override = default;
 

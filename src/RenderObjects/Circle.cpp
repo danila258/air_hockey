@@ -5,15 +5,17 @@ Circle::Circle() : RenderObject(), _rotationAngle(ZERO), _fractionOfCircle(1.0f)
     setupRenderObject();
 }
 
-Circle::Circle(float x, float y, float radius, float rotationAngle, float fractionOfCircle, int numSegments)
-     : RenderObject(x, y, radius * 2.0f, radius * 2.0f, radius), _rotationAngle(rotationAngle),
+Circle::Circle(float x, float y, float radius, float rotationAngle, float fractionOfCircle, int numSegments,
+               const QVector3D& color)
+     : RenderObject(x, y, radius * 2.0f, radius * 2.0f, radius, color), _rotationAngle(rotationAngle),
        _fractionOfCircle(fractionOfCircle), _numSegments(numSegments)
 {
     setupRenderObject();
 }
 
-Circle::Circle(const QVector2D& center, float radius, float rotationAngle, float fractionOfCircle, int numSegments)
-     : RenderObject(center, {radius * 2.0f, radius * 2.0f}, radius), _rotationAngle(rotationAngle),
+Circle::Circle(const QVector2D& center, float radius, float rotationAngle, float fractionOfCircle, int numSegments,
+               const QVector3D& color)
+     : RenderObject(center, {radius * 2.0f, radius * 2.0f}, radius, color), _rotationAngle(rotationAngle),
        _fractionOfCircle(fractionOfCircle), _numSegments(numSegments)
 {
     setupRenderObject();

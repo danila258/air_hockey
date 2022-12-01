@@ -6,16 +6,19 @@
 #define USER_BAT_CENTER_Y -0.5f
 #define USER_BAT_RADIUS 0.12f
 #define USER_BAT_NUM_SEGMENTS 30
+#define USER_BAT_COLOR {1.0f, 1.0f, 1.0f}
 
 #define AI_BAT_CENTER_X 0.0f
 #define AI_BAT_CENTER_Y 0.5f
 #define AI_BAT_RADIUS 0.12f
 #define AI_BAT_NUM_SEGMENTS 30
+#define AI_BAT_COLOR {1.0f, 1.0f, 1.0f}
 
 #define PUCK_CENTER_X 0.0f
 #define PUCK_CENTER_Y 0.0f
 #define PUCK_RADIUS 0.06f
 #define PUCK_NUM_SEGMENTS 15
+#define PUCK_COLOR {1.0f, 1.0f, 1.0f}
 
 #define USER_INPUT_FACTOR 1.0f
 #define MAX_SPEED 0.07f
@@ -25,11 +28,16 @@
 
 #define WALL_OFFSET 0.0f
 #define WALL_WIDTH 0.04f
+#define WALL_COLOR {1.0f, 0.0f, 0.0f}
+
 #define WALL_ROUNDING_RADIUS 0.06f
 #define WALL_ROUNDING_NUM_SEGMENTS 5
+#define WALL_ROUNDING_COLOR {0.0f, 1.0f, 0.0f}
+
 #define WALL_RECTANGLE_RADIUS 0.02f
 #define WALL_RECTANGLE_ROUNDING_NUM_SEGMENTS 30
-#define GATE_WIDTH 0.5f
+
+#define GATE_WIDTH 0.6f
 
 #define MAX_X 1.0f
 #define MIN_X -1.0f

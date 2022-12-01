@@ -1,18 +1,19 @@
 #include "GameObject.h"
 
 GameObject::GameObject() : _center(ZERO, ZERO), _speed(ZERO, ZERO), _radius(0.5), _numSegments(4.0f),
-    _userControllFlag(true), _translateVector(_center)
+    _color(1.0f, 1.0f, 1.0f), _userControllFlag(true), _translateVector(_center)
 {}
 
-GameObject::GameObject(float x, float y, float dx, float dy, float radius, float numSegments, bool controlledFlag)
-    : _center(x, y), _speed(dx, dy), _radius(radius), _numSegments(numSegments), _userControllFlag(controlledFlag),
-      _translateVector(_center)
+GameObject::GameObject(float x, float y, float dx, float dy, float radius, float numSegments, const QVector3D& color,
+                       bool controlledFlag)
+    : _center(x, y), _speed(dx, dy), _radius(radius), _numSegments(numSegments), _color(color),
+      _userControllFlag(controlledFlag), _translateVector(_center)
 {}
 
 GameObject::GameObject(const QVector2D& center, const QVector2D& speed, float radius, float numSegments,
-                       bool controlledFlag)
-    : _center(center), _speed(speed), _radius(radius), _numSegments(numSegments), _userControllFlag(controlledFlag),
-      _translateVector(_center)
+                       const QVector3D& color, bool controlledFlag)
+    : _center(center), _speed(speed), _radius(radius), _numSegments(numSegments), _color(color),
+      _userControllFlag(controlledFlag), _translateVector(_center)
 {}
 
 GameObject::~GameObject()
