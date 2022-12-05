@@ -1,4 +1,4 @@
-# air_hockey
+# Air Hockey
 
 ## Build
 - `cmake -S /path/to/air_hockey/src -B /path/to/build-dir`
