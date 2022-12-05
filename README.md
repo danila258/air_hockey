@@ -1,7 +1,7 @@
 # air_hockey
 
 ## Build 
-'cmake -S ./air_hockey/src -B ./your_build_dir'
+`cmake -S ./air_hockey/src -B ./your_build_dir`
 
 ## Technologies Used
 - C++17
