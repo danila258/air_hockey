@@ -79,7 +79,7 @@ void GameObject::setSpeed(const QVector2D& speed)
 
 void GameObject::setSpeed(float x, float y)
 {
-    _speed = {x, y};
+    setSpeed({x, y});
 }
 
 void GameObject::setSpeedX(float x)

@@ -16,14 +16,88 @@ void Physics::setFreeObjects(QVector<GameObject*>& freeObjects)
 
 void Physics::calulatePhysics()
 {
-    calculateWallsCollisions(_controlledObjects, false);
+    calculateControlledObjectsWallsCollisions(_controlledObjects, false);
+    calculateFreeObjectsWallsCollisions(_freeObjects, true);
     calculateObjectsCollisions();
-    calculateWallsCollisions(_freeObjects, true);
-    frictionForce();
+
     speedControl();
+    frictionForce();
 }
 
-void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const
+void Physics::calculateFreeObjectsWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const
+{
+    for (auto&& object : objects)
+    {
+        bool flagX = false;
+        bool flagY = false;
+
+        QVector2D translateX;
+        QVector2D translateY;
+
+        if (object->getX() + object->getRadius() + object->getSpeed().x() > MAX_X - (WALL_OFFSET + WALL_WIDTH))
+        {
+            flagX = true;
+            float difference = object->getX() + object->getRadius() + object->getSpeed().x()
+                               - (MAX_X - (WALL_OFFSET + WALL_WIDTH));
+
+            translateX = object->getSpeed().normalized()
+                               * (object->getSpeed().length() - difference / getSin(object->getSpeed(), {0.0f, 1.0f}));
+
+            object->setSpeed( getReflectedVector(object->getSpeed(), {-1.0f, 0.0f}) );
+        }
+
+        if (object->getX() - object->getRadius() + object->getSpeed().x() < MIN_X + (WALL_OFFSET + WALL_WIDTH))
+        {
+            flagX = true;
+            float difference = object->getX() - object->getRadius() + object->getSpeed().x()
+                               - (MIN_X + (WALL_OFFSET + WALL_WIDTH));
+
+            translateX = object->getSpeed().normalized()
+                               * (object->getSpeed().length() + difference / getSin(object->getSpeed(), {0.0f, 1.0f}));
+
+            object->setSpeed( getReflectedVector(object->getSpeed(), {1.0f, 0.0f}) );
+        }
+
+        if (object->getY() + object->getRadius() + object->getSpeed().y() > MAX_Y - (WALL_OFFSET + WALL_WIDTH))
+        {
+            flagY = true;
+            float difference = object->getY() + object->getRadius() + object->getSpeed().y()
+                               - (MAX_Y - (WALL_OFFSET + WALL_WIDTH));
+
+            translateY = object->getSpeed().normalized()
+                               * (object->getSpeed().length() - difference / getSin(object->getSpeed(), {1.0f, 0.0f}));
+
+            object->setSpeed( getReflectedVector(object->getSpeed(), {0.0f, -1.0f}) );
+        }
+
+        if (object->getY() - object->getRadius() + object->getSpeed().y() < MIN_Y + (WALL_OFFSET + WALL_WIDTH))
+        {
+            flagY = true;
+            float difference = object->getY() - object->getRadius() + object->getSpeed().y()
+                               - (MIN_Y + (WALL_OFFSET + WALL_WIDTH));
+
+            translateY = object->getSpeed().normalized()
+                               * (object->getSpeed().length() + difference / getSin(object->getSpeed(), {1.0f, 0.0f}));
+
+            object->setSpeed( getReflectedVector(object->getSpeed(), {0.0f, -1.0f}) );
+        }
+
+        if (flagX && flagY)
+        {
+            object->changeCenter((translateX + translateY) / 2.0f);
+        }
+        else if (flagX)
+        {
+            object->changeCenter(translateX);
+        }
+        else if (flagY)
+        {
+            object->changeCenter(translateY);
+        }
+    }
+}
+
+void Physics::calculateControlledObjectsWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const
 {
     for (auto&& object : objects)
     {
@@ -32,41 +106,21 @@ void Physics::calculateWallsCollisions(QVector<GameObject*> objects, bool freeOb
         if (object->getX() + object->getRadius() > MAX_X - (WALL_OFFSET + WALL_WIDTH))
         {
             newCenter[0] = MAX_X - (WALL_OFFSET + WALL_WIDTH) - object->getRadius();
-
-            if (freeObjectsFlag)
-            {
-                object->setSpeed(getReflectedVector(object->getSpeed(), {-1.0f, 0.0f}));
-            }
         }
 
         if (object->getX() - object->getRadius() < MIN_X + (WALL_OFFSET + WALL_WIDTH))
         {
             newCenter[0] = MIN_X + (WALL_OFFSET + WALL_WIDTH) + object->getRadius();
-
-            if (freeObjectsFlag)
-            {
-                object->setSpeed(getReflectedVector(object->getSpeed(), {1.0f, 0.0f}));
-            }
         }
 
         if (object->getY() + object->getRadius() > MAX_Y - (WALL_OFFSET + WALL_WIDTH))
         {
             newCenter[1] = MAX_Y - (WALL_OFFSET + WALL_WIDTH) - object->getRadius();
-
-            if (freeObjectsFlag)
-            {
-                object->setSpeed(getReflectedVector(object->getSpeed(), {0.0f, -1.0f}));
-            }
         }
 
         if (object->getY() - object->getRadius() < MIN_Y + (WALL_OFFSET + WALL_WIDTH))
         {
             newCenter[1] = MIN_Y + (WALL_OFFSET + WALL_WIDTH) + object->getRadius();
-
-            if (freeObjectsFlag)
-            {
-                object->setSpeed(getReflectedVector(object->getSpeed(), {0.0f, 1.0f}));
-            }
         }
 
         if (newCenter != object->getCenter())
@@ -231,6 +285,12 @@ float Physics::getCos(const QVector2D v1, const QVector2D v2) const
     }
 
     return QVector2D::dotProduct(v1, v2) / (v1.length() * v2.length());
+}
+
+float Physics::getSin(const QVector2D v1, const QVector2D v2) const
+{
+    float cos = getCos(v1, v2);
+    return std::sqrt(1.0f - cos * cos);
 }
 
 QVector2D Physics::getProjection(const QVector2D& axis, const QVector2D& vector) const

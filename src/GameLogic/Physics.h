@@ -23,7 +23,8 @@ private:
     QVector<GameObject*>& _freeObjects;
 
     void calculateObjectsCollisions() const;
-    void calculateWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const;
+    void calculateControlledObjectsWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const;
+    void calculateFreeObjectsWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const;
     void frictionForce() const;
     void speedControl() const;
 
@@ -33,6 +34,7 @@ private:
     QVector2D getProjection(const QVector2D& axis, const QVector2D& vector) const;
 
     float getCos(const QVector2D v1, const QVector2D v2) const;
+    float getSin(const QVector2D v1, const QVector2D v2) const;
     QVector2D solveQuadraticEquation(float a, float b, float c) const;
 };
 

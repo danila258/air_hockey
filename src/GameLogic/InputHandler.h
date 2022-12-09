@@ -29,6 +29,7 @@ private:
 
     QVector2D _lastPosition;
     QVector2D _lastSpeed;
+
     bool _clickFlag = false;
 
     float _width;

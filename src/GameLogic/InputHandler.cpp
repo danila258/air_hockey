@@ -65,5 +65,3 @@ void InputHandler::updateUserBatPosition()
     _userBat.setCenter(_lastPosition);
     _userBat.setSpeed(_lastSpeed);
 }
-
-
