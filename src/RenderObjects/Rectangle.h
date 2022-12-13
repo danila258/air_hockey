@@ -11,7 +11,7 @@ public:
     Rectangle(float x, float y, float width, float height, const QVector3D& color);
     Rectangle(const QVector2D& center, const QVector2D& dimension, const QVector3D& color);
 
-    ~Rectangle() override = default;
+    ~Rectangle() = default;
 
     void userInputCheck() override;
     void setVertexArray() override;

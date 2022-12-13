@@ -4,7 +4,9 @@
 #include "Configuration.h"
 #include "InputHandler.h"
 #include "Physics.h"
+#include "GameRules.h"
 #include "../GameObjects/Bat.h"
+#include "../GameObjects/Puck.h"
 #include "../RenderObjects/RoundedRectangle.h"
 #include "../RenderObjects/Ring.h"
 
@@ -31,6 +33,7 @@ private:
 
     Physics _physics = {_controlledObjects, _freeObjects};
     InputHandler* _inputHandler;
+    GameRules* _gameRules;
 
 protected:
     void mouseMoveEvent(QMouseEvent* event) override;

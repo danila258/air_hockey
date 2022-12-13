@@ -1,6 +1,6 @@
 #include "InputHandler.h"
 
-InputHandler::InputHandler(Bat& userBat, Bat& puck, float width, float height)
+InputHandler::InputHandler(GameObject& userBat, GameObject& puck, float width, float height)
     : _userBat(userBat), _puck(puck), _width(width), _height(height), _lastPosition( userBat.getCenter() )
 {}
 
@@ -22,8 +22,7 @@ void InputHandler::mouseMoveEvent(QMouseEvent* event, float width, float height)
     QVector2D position( event->position().rx(), event->position().ry() );
     position = getGlCoordinates(position);
 
-    _userBat.setCenter(position);
-    _userBat.setSpeed((position - _lastPosition) / float(USER_INPUT_FACTOR));
+    _userBat.setUsedSpeedFlag(false);
 
     _lastSpeed = (position - _lastPosition) / USER_INPUT_FACTOR;
     _lastPosition = position;
@@ -57,6 +56,7 @@ void InputHandler::mouseReleaseEvent(QMouseEvent* event, float width, float heig
     if (event->button() == Qt::LeftButton)
     {
         _clickFlag = false;
+        _lastSpeed = {ZERO, ZERO};
     }
 }
 

@@ -13,7 +13,7 @@ public:
     Circle(const QVector2D& center, float radius, float rotationAngle, float fractionOfCircle, int numSegments,
            const QVector3D& color);
 
-    ~Circle() override = default;
+    ~Circle() = default;
 
 private:
     void userInputCheck() override;

@@ -2,9 +2,10 @@
 #define PHYSICS_H
 
 #include "Configuration.h"
-#include "../GameObjects/Bat.h"
+#include "../GameObjects/CircleObject.h"
 
 #include <cmath>
+#include <QDebug>
 
 
 class Physics
@@ -23,8 +24,8 @@ private:
     QVector<GameObject*>& _freeObjects;
 
     void calculateObjectsCollisions() const;
-    void calculateControlledObjectsWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const;
-    void calculateFreeObjectsWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const;
+    void calculateControlledObjectsWallsCollisions(QVector<GameObject*> objects) const;
+    void calculateFreeObjectsWallsCollisions(QVector<GameObject*> objects) const;
     void frictionForce() const;
     void speedControl() const;
 

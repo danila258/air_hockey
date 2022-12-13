@@ -3,26 +3,23 @@
 
 #define WALL_COLOR_1 {0.341f, 0.294f, 0.564f}
 #define WALL_COLOR_2 {0.619f, 0.341f, 0.615f}
-#define PUCK_COLOR_3 {0.988f, 0.521f, 0.682f}
-#define FIELD_COLOR {0.188f, 0.227f, 0.321f}
+#define PUCK_COLOR {0.988f, 0.521f, 0.682f}
+#define FIELD_COLOR 0.188f, 0.227f, 0.321f, 1.0f
+#define MARKING_COLOR {0.22f, 0.270f, 0.370f}
 
 #define USER_BAT_CENTER_X 0.0f
 #define USER_BAT_CENTER_Y -0.5f
-#define USER_BAT_RADIUS 0.12f
-#define USER_BAT_NUM_SEGMENTS 30
-#define USER_BAT_COLOR {1.0f, 1.0f, 1.0f}
 
 #define AI_BAT_CENTER_X 0.0f
 #define AI_BAT_CENTER_Y 0.5f
-#define AI_BAT_RADIUS 0.12f
-#define AI_BAT_NUM_SEGMENTS 30
-#define AI_BAT_COLOR {1.0f, 1.0f, 1.0f}
+
+#define BAT_RADIUS 0.1f
+#define BAT_NUM_SEGMENTS 30
 
 #define PUCK_CENTER_X 0.0f
 #define PUCK_CENTER_Y 0.0f
 #define PUCK_RADIUS 0.06f
 #define PUCK_NUM_SEGMENTS 15
-#define PUCK_COLOR {1.0f, 1.0f, 1.0f}
 
 #define USER_INPUT_FACTOR 1.0f
 #define MAX_SPEED 0.07f
@@ -44,8 +41,6 @@
 #define MARKING_LINE_RADIUS 0.01f
 #define MARKING_LINE_RADIUS_NUM_SEGMENTS 5
 #define MARKING_CIRCLE_RADIUS_NUM_SEGMENTS 30
-#define MARKING_COLOR {0.22f, 0.270f, 0.370f}
-//#define MARKING_COLOR {0.21f, 0.260f, 0.360f}
 
 #define GATE_WIDTH 0.6f
 

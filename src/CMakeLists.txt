@@ -21,14 +21,20 @@ set(PROJECT_SOURCES
     GameLogic/main.cpp
     GameLogic/GameWindow.cpp
     GameLogic/GameWindow.h
-    GameLogic/InputHandler.cpp
-    GameLogic/InputHandler.h
     GameLogic/Physics.cpp
     GameLogic/Physics.h
+    GameLogic/InputHandler.cpp
+    GameLogic/InputHandler.h
+    GameLogic/GameRules.cpp
+    GameLogic/GameRules.h
     GameObjects/GameObject.cpp
     GameObjects/GameObject.h
+    GameObjects/CircleObject.cpp
+    GameObjects/CircleObject.h
     GameObjects/Bat.cpp
     GameObjects/Bat.h
+    GameObjects/Puck.cpp
+    GameObjects/Puck.h
     RenderObjects/ShaderProgram.cpp
     RenderObjects/ShaderProgram.h
     RenderObjects/SceneObject.cpp

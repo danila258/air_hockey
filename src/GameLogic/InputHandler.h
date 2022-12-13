@@ -13,7 +13,7 @@ class InputHandler
 {
 public:
     InputHandler() = delete;
-    InputHandler(Bat& userBat, Bat& puck, float width, float height);
+    InputHandler(GameObject& userBat, GameObject& puck, float width, float height);
 
     void mouseMoveEvent(QMouseEvent* event, float width, float height);
     void mousePressEvent(QMouseEvent* event, float width, float height);
@@ -24,8 +24,8 @@ public:
 private:
     QVector2D getGlCoordinates(const QVector2D& vertex) const;
 
-    Bat& _userBat;
-    Bat& _puck;
+    GameObject& _userBat;
+    GameObject& _puck;
 
     QVector2D _lastPosition;
     QVector2D _lastSpeed;

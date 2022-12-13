@@ -20,7 +20,7 @@ public:
     RenderObject(const QVector2D& center, const QVector2D& dimension, float radius = ZERO,
                  const QVector3D& color = {1.0f, 1.0f, 1.0f});
 
-    ~RenderObject() override;
+    ~RenderObject();
 
     void create() override;
     void render() override;

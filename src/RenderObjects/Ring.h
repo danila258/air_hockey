@@ -13,7 +13,7 @@ public:
     Ring(const QVector2D& center, float bigRadius, float smallRadius, float rotationAngle, float fractionOfCircle,
          int numSegments, const QVector3D& color);
 
-    ~Ring() override = default;
+    ~Ring() = default;
 
 private:
     void userInputCheck() override;

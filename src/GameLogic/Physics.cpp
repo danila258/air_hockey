@@ -16,88 +16,132 @@ void Physics::setFreeObjects(QVector<GameObject*>& freeObjects)
 
 void Physics::calulatePhysics()
 {
-    calculateControlledObjectsWallsCollisions(_controlledObjects, false);
-    calculateFreeObjectsWallsCollisions(_freeObjects, true);
+    calculateControlledObjectsWallsCollisions(_controlledObjects);
+    calculateFreeObjectsWallsCollisions(_freeObjects);
     calculateObjectsCollisions();
 
     speedControl();
     frictionForce();
 }
 
-void Physics::calculateFreeObjectsWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const
+void Physics::calculateFreeObjectsWallsCollisions(QVector<GameObject*> objects) const
 {
+    // physics in gate and physics in playfield
+
     for (auto&& object : objects)
     {
-        bool flagX = false;
-        bool flagY = false;
+        bool positionFlag = object->getX() - object->getRadius() > - GATE_WIDTH / 2.0f - WALL_RECTANGLE_RADIUS &&
+                object->getX() + object->getRadius() < GATE_WIDTH / 2.0f + WALL_RECTANGLE_RADIUS;
 
-        QVector2D translateX;
-        QVector2D translateY;
-
-        if (object->getX() + object->getRadius() + object->getSpeed().x() > MAX_X - (WALL_OFFSET + WALL_WIDTH))
+        if (positionFlag &&
+            std::abs(object->getY() + object->getSpeed().y() ) >= MAX_Y - WALL_OFFSET - WALL_WIDTH)
         {
-            flagX = true;
-            float difference = object->getX() + object->getRadius() + object->getSpeed().x()
-                               - (MAX_X - (WALL_OFFSET + WALL_WIDTH));
+            bool flag = false;
+            QVector2D translate;
 
-            translateX = object->getSpeed().normalized()
-                               * (object->getSpeed().length() - difference / getSin(object->getSpeed(), {0.0f, 1.0f}));
+            if (object->getX() + object->getRadius() + object->getSpeed().x() > GATE_WIDTH / 2.0f + WALL_RECTANGLE_RADIUS)
+            {
+                flag = true;
+                float difference = object->getX() + object->getRadius() + object->getSpeed().x()
+                                   - GATE_WIDTH / 2.0f;
 
-            object->setSpeed( getReflectedVector(object->getSpeed(), {-1.0f, 0.0f}) );
+                translate = object->getSpeed().normalized()
+                            * (object->getSpeed().length() - difference / getSin(object->getSpeed(), {0.0f, 1.0f}));
+
+                object->setSpeed( getReflectedVector(object->getSpeed(), {-1.0f, 0.0f}) );
+            }
+
+            if (object->getX() - object->getRadius() + object->getSpeed().x() < - GATE_WIDTH / 2.0f - WALL_RECTANGLE_RADIUS)
+            {
+                flag = true;
+                float difference = object->getX() - object->getRadius() + object->getSpeed().x()
+                                   + GATE_WIDTH / 2.0f;
+
+                translate = object->getSpeed().normalized()
+                             * (object->getSpeed().length() + difference / getSin(object->getSpeed(), {0.0f, 1.0f}));
+
+                object->setSpeed( getReflectedVector(object->getSpeed(), {1.0f, 0.0f}) );
+            }
+
+            if (flag)
+            {
+                object->changeCenter(translate);
+            }
         }
-
-        if (object->getX() - object->getRadius() + object->getSpeed().x() < MIN_X + (WALL_OFFSET + WALL_WIDTH))
+        else if ( std::abs(object->getY() - object->getSpeed().y() ) <= MAX_Y - WALL_OFFSET - WALL_WIDTH &&
+                  !positionFlag)
         {
-            flagX = true;
-            float difference = object->getX() - object->getRadius() + object->getSpeed().x()
-                               - (MIN_X + (WALL_OFFSET + WALL_WIDTH));
+            bool flagX = false;
+            bool flagY = false;
 
-            translateX = object->getSpeed().normalized()
-                               * (object->getSpeed().length() + difference / getSin(object->getSpeed(), {0.0f, 1.0f}));
+            QVector2D translateX;
+            QVector2D translateY;
 
-            object->setSpeed( getReflectedVector(object->getSpeed(), {1.0f, 0.0f}) );
-        }
+            if (object->getX() + object->getRadius() + object->getSpeed().x() > MAX_X - (WALL_OFFSET + WALL_WIDTH))
+            {
+                flagX = true;
+                float difference = object->getX() + object->getRadius() + object->getSpeed().x()
+                                   - (MAX_X - (WALL_OFFSET + WALL_WIDTH));
 
-        if (object->getY() + object->getRadius() + object->getSpeed().y() > MAX_Y - (WALL_OFFSET + WALL_WIDTH))
-        {
-            flagY = true;
-            float difference = object->getY() + object->getRadius() + object->getSpeed().y()
-                               - (MAX_Y - (WALL_OFFSET + WALL_WIDTH));
+                translateX = object->getSpeed().normalized()
+                             * (object->getSpeed().length() - difference / getSin(object->getSpeed(), {0.0f, 1.0f}));
 
-            translateY = object->getSpeed().normalized()
-                               * (object->getSpeed().length() - difference / getSin(object->getSpeed(), {1.0f, 0.0f}));
+                object->setSpeed( getReflectedVector(object->getSpeed(), {-1.0f, 0.0f}) );
+            }
 
-            object->setSpeed( getReflectedVector(object->getSpeed(), {0.0f, -1.0f}) );
-        }
+            if (object->getX() - object->getRadius() + object->getSpeed().x() < MIN_X + (WALL_OFFSET + WALL_WIDTH))
+            {
+                flagX = true;
+                float difference = object->getX() - object->getRadius() + object->getSpeed().x()
+                                   - (MIN_X + (WALL_OFFSET + WALL_WIDTH));
 
-        if (object->getY() - object->getRadius() + object->getSpeed().y() < MIN_Y + (WALL_OFFSET + WALL_WIDTH))
-        {
-            flagY = true;
-            float difference = object->getY() - object->getRadius() + object->getSpeed().y()
-                               - (MIN_Y + (WALL_OFFSET + WALL_WIDTH));
+                translateX = object->getSpeed().normalized()
+                             * (object->getSpeed().length() + difference / getSin(object->getSpeed(), {0.0f, 1.0f}));
 
-            translateY = object->getSpeed().normalized()
-                               * (object->getSpeed().length() + difference / getSin(object->getSpeed(), {1.0f, 0.0f}));
+                object->setSpeed( getReflectedVector(object->getSpeed(), {1.0f, 0.0f}) );
+            }
 
-            object->setSpeed( getReflectedVector(object->getSpeed(), {0.0f, -1.0f}) );
-        }
+            if (object->getY() + object->getRadius() + object->getSpeed().y() > MAX_Y - (WALL_OFFSET + WALL_WIDTH))
+            {
+                flagY = true;
+                float difference = object->getY() + object->getRadius() + object->getSpeed().y()
+                                   - (MAX_Y - (WALL_OFFSET + WALL_WIDTH));
 
-        if (flagX && flagY)
-        {
-            object->changeCenter((translateX + translateY) / 2.0f);
-        }
-        else if (flagX)
-        {
-            object->changeCenter(translateX);
-        }
-        else if (flagY)
-        {
-            object->changeCenter(translateY);
+                translateY = object->getSpeed().normalized()
+                             * (object->getSpeed().length() - difference / getSin(object->getSpeed(), {1.0f, 0.0f}));
+
+                object->setSpeed( getReflectedVector(object->getSpeed(), {0.0f, -1.0f}) );
+            }
+
+            if (object->getY() - object->getRadius() + object->getSpeed().y() < MIN_Y + (WALL_OFFSET + WALL_WIDTH))
+            {
+                flagY = true;
+                float difference = object->getY() - object->getRadius() + object->getSpeed().y()
+                                   - (MIN_Y + (WALL_OFFSET + WALL_WIDTH));
+
+                translateY = object->getSpeed().normalized()
+                             * (object->getSpeed().length() + difference / getSin(object->getSpeed(), {1.0f, 0.0f}));
+
+                object->setSpeed( getReflectedVector(object->getSpeed(), {0.0f, -1.0f}) );
+            }
+
+            if (flagX && flagY)
+            {
+                object->changeCenter((translateX + translateY) / 2.0f);
+            }
+            else if (flagX)
+            {
+                object->changeCenter(translateX);
+            }
+            else if (flagY)
+            {
+                object->changeCenter(translateY);
+            }
         }
     }
 }
 
-void Physics::calculateControlledObjectsWallsCollisions(QVector<GameObject*> objects, bool freeObjectsFlag) const
+void Physics::calculateControlledObjectsWallsCollisions(QVector<GameObject*> objects) const
 {
     for (auto&& object : objects)
     {

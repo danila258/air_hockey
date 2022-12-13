@@ -16,7 +16,7 @@ public:
     RoundedRectangle(const QVector2D& center, const QVector2D& dimension, float roundingRadius,
                      float roundingNumSegments, const QVector3D& color);
 
-    ~RoundedRectangle() override = default;
+    ~RoundedRectangle() = default;
 
 protected:
     void userInputCheck();

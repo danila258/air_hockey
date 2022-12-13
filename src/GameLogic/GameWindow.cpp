@@ -2,11 +2,11 @@
 
 GameWindow::GameWindow()
 {
-    Bat* userBat = new Bat(USER_BAT_CENTER_X, USER_BAT_CENTER_Y, ZERO, ZERO, USER_BAT_RADIUS, USER_BAT_NUM_SEGMENTS,
-                           WALL_COLOR_2, true);
-    Bat* aiBat = new Bat(AI_BAT_CENTER_X, AI_BAT_CENTER_Y, ZERO, ZERO, AI_BAT_RADIUS, AI_BAT_NUM_SEGMENTS, WALL_COLOR_1,
+    Bat* userBat = new Bat(USER_BAT_CENTER_X, USER_BAT_CENTER_Y, ZERO, ZERO, BAT_RADIUS, BAT_NUM_SEGMENTS, WALL_COLOR_2,
+                           true);
+    Bat* aiBat = new Bat(AI_BAT_CENTER_X, AI_BAT_CENTER_Y, ZERO, ZERO, BAT_RADIUS, BAT_NUM_SEGMENTS, WALL_COLOR_1,
                          true);
-    Bat* puck = new Bat(PUCK_CENTER_X, PUCK_CENTER_Y, ZERO, ZERO, PUCK_RADIUS, PUCK_NUM_SEGMENTS, PUCK_COLOR_3,
+    Puck* puck = new Puck(PUCK_CENTER_X, PUCK_CENTER_Y, ZERO, ZERO, PUCK_RADIUS, PUCK_NUM_SEGMENTS, PUCK_COLOR,
                         false);
 
     _controlledObjects.push_back(userBat);
@@ -14,6 +14,7 @@ GameWindow::GameWindow()
     _freeObjects.push_back(puck);
 
     _inputHandler = new InputHandler(*userBat, *puck, width(), height());
+    _gameRules = new GameRules(*userBat, *aiBat, *puck);
 
     Ring* topRightRounding = new Ring(MAX_X - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
                                       MAX_Y - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
@@ -243,9 +244,10 @@ void GameWindow::initializeGL()
 void GameWindow::paintGL()
 {
     _inputHandler->updateUserBatPosition();
+    _gameRules->applyGameRules();
     _physics.calulatePhysics();
 
-    glClearColor(0.188f, 0.227f, 0.321f, 1.0f);
+    glClearColor(FIELD_COLOR);
     glClear(GL_COLOR_BUFFER_BIT);
 
     const qreal retinaScale = devicePixelRatio();                       // needed for Macs with retina display
