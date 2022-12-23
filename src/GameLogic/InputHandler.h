@@ -31,6 +31,7 @@ private:
     QVector2D _lastSpeed;
 
     bool _clickFlag = false;
+    bool _speedFlag = false;    // set speed 0, when user click but don't move
 
     float _width;
     float _height;

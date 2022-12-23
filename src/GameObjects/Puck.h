@@ -2,7 +2,7 @@
 #define PUCK_H
 
 #include "CircleObject.h"
-#include "../RenderObjects/Circle.h"
+#include "../SceneObjects/Circle.h"
 
 
 class Puck : public CircleObject

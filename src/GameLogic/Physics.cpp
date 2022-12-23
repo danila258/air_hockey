@@ -309,7 +309,7 @@ void Physics::removeIntersections(GameObject& freeObject, const GameObject& cont
     }
 }
 
-QVector2D Physics::getReflectedVector(const QVector2D& vector, const QVector2D& normal) const
+QVector2D getReflectedVector(const QVector2D& vector, const QVector2D& normal)
 {
     float dot = QVector2D::dotProduct(normal, vector);
 
@@ -321,7 +321,7 @@ QVector2D Physics::getReflectedVector(const QVector2D& vector, const QVector2D& 
     return vector - 2.0f * normal * dot;
 }
 
-float Physics::getCos(const QVector2D v1, const QVector2D v2) const
+float getCos(const QVector2D v1, const QVector2D v2)
 {
     if (v1.length() == 0 || v2.length() == 0)
     {
@@ -331,18 +331,18 @@ float Physics::getCos(const QVector2D v1, const QVector2D v2) const
     return QVector2D::dotProduct(v1, v2) / (v1.length() * v2.length());
 }
 
-float Physics::getSin(const QVector2D v1, const QVector2D v2) const
+float getSin(const QVector2D v1, const QVector2D v2)
 {
     float cos = getCos(v1, v2);
     return std::sqrt(1.0f - cos * cos);
 }
 
-QVector2D Physics::getProjection(const QVector2D& axis, const QVector2D& vector) const
+QVector2D getProjection(const QVector2D& axis, const QVector2D& vector)
 {
     return axis * (QVector2D::dotProduct(axis, vector) / axis.lengthSquared());
 }
 
-QVector2D Physics::solveQuadraticEquation(float a, float b, float c) const
+QVector2D solveQuadraticEquation(float a, float b, float c)
 {
     QVector2D answer;
     float D;

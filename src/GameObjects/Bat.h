@@ -2,8 +2,8 @@
 #define BAT_H
 
 #include "CircleObject.h"
-#include "../RenderObjects/Circle.h"
-#include "../RenderObjects/Ring.h"
+#include "../SceneObjects/Circle.h"
+#include "../SceneObjects/Ring.h"
 
 
 class Bat : public CircleObject

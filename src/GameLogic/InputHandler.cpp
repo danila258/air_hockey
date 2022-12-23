@@ -22,10 +22,9 @@ void InputHandler::mouseMoveEvent(QMouseEvent* event, float width, float height)
     QVector2D position( event->position().rx(), event->position().ry() );
     position = getGlCoordinates(position);
 
-    _userBat.setUsedSpeedFlag(false);
-
     _lastSpeed = (position - _lastPosition) / USER_INPUT_FACTOR;
     _lastPosition = position;
+    _speedFlag = true;
 }
 
 void InputHandler::mousePressEvent(QMouseEvent* event, float width, float height)
@@ -62,6 +61,15 @@ void InputHandler::mouseReleaseEvent(QMouseEvent* event, float width, float heig
 
 void InputHandler::updateUserBatPosition()
 {
-    _userBat.setCenter(_lastPosition);
-    _userBat.setSpeed(_lastSpeed);
+    if (_speedFlag)
+    {
+        _speedFlag = false;
+        _userBat.setCenter(_lastPosition);
+        _userBat.setSpeed(_lastSpeed);
+    }
+    else
+    {
+        _userBat.setCenter(_lastPosition);
+        _userBat.setSpeed(ZERO, ZERO);
+    }
 }

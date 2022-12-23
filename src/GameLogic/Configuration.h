@@ -1,6 +1,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+
 #define WALL_COLOR_1 {0.341f, 0.294f, 0.564f}
 #define WALL_COLOR_2 {0.619f, 0.341f, 0.615f}
 #define PUCK_COLOR {0.988f, 0.521f, 0.682f}
@@ -8,10 +9,11 @@
 #define MARKING_COLOR {0.22f, 0.270f, 0.370f}
 
 #define USER_BAT_CENTER_X 0.0f
-#define USER_BAT_CENTER_Y -0.5f
+#define USER_BAT_CENTER_Y -0.9f
 
 #define AI_BAT_CENTER_X 0.0f
-#define AI_BAT_CENTER_Y 0.5f
+#define AI_BAT_CENTER_Y 0.9f
+#define AI_BAT_SPEED 0.01f
 
 #define BAT_RADIUS 0.1f
 #define BAT_NUM_SEGMENTS 30

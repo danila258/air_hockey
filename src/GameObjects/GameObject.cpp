@@ -64,11 +64,6 @@ bool GameObject::getUserControlFlag() const
     return _userControllFlag;
 }
 
-bool GameObject::getUsedSpeedFlag() const
-{
-    return _usedSpeedFlag;
-}
-
 void GameObject::setCenter(float x, float y)
 {
     setCenter({x, y});
@@ -123,11 +118,6 @@ void GameObject::changeSpeed(const QVector2D& speed)
 void GameObject::changeSpeed(float x, float y)
 {
     changeSpeed({x, y});
-}
-
-void GameObject::setUsedSpeedFlag(bool flag)
-{
-    _usedSpeedFlag = flag;
 }
 
 void GameObject::regularTransformations()

@@ -8,6 +8,14 @@
 #include <QDebug>
 
 
+QVector2D getReflectedVector(const QVector2D& vector, const QVector2D& normal);
+QVector2D getProjection(const QVector2D& axis, const QVector2D& vector);
+
+float getCos(const QVector2D v1, const QVector2D v2);
+float getSin(const QVector2D v1, const QVector2D v2);
+QVector2D solveQuadraticEquation(float a, float b, float c);
+
+
 class Physics
 {
 public:
@@ -30,13 +38,6 @@ private:
     void speedControl() const;
 
     void removeIntersections(GameObject& freeObject, const GameObject& controlledObject) const;
-
-    QVector2D getReflectedVector(const QVector2D& vector, const QVector2D& normal) const;
-    QVector2D getProjection(const QVector2D& axis, const QVector2D& vector) const;
-
-    float getCos(const QVector2D v1, const QVector2D v2) const;
-    float getSin(const QVector2D v1, const QVector2D v2) const;
-    QVector2D solveQuadraticEquation(float a, float b, float c) const;
 };
 
 

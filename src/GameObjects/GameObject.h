@@ -2,7 +2,7 @@
 #define GAMEOBJECT_H
 
 #include "../GameLogic/Configuration.h"
-#include "../RenderObjects/SceneObject.h"
+#include "../SceneObjects/SceneObject.h"
 
 #include <QVector>
 #include <QVector3D>
@@ -34,7 +34,6 @@ public:
     const QVector2D& getSpeed() const;
 
     bool getUserControlFlag() const;
-    bool getUsedSpeedFlag() const;
 
     void setCenter(const QVector2D& center);
     void setCenter(float x, float y);
@@ -49,8 +48,6 @@ public:
 
     void changeSpeed(const QVector2D& speed);
     void changeSpeed(float x, float y);
-
-    void setUsedSpeedFlag(bool flag);
 
 protected:
     void regularTransformations();
@@ -68,7 +65,6 @@ protected:
     QVector3D _color;
 
     bool _userControllFlag;       // users objects don't use speed
-    bool _usedSpeedFlag = false;
 
     QVector2D _translateVector;   // = newCenter - oldCenter
     bool _translateFlag = true;   // fasle = use speed, true = use translate

@@ -11,7 +11,7 @@ void GameRules::applyGameRules()
         _userBat.setCenter(_userBat.getX(), ZERO - _userBat.getRadius());
     }
 
-    if (_aiBat.getY() + _aiBat.getRadius() < ZERO)
+    if (_aiBat.getY() - _aiBat.getRadius() < ZERO)
     {
         _aiBat.setCenter(_aiBat.getX(), ZERO + _aiBat.getRadius());
     }

@@ -35,22 +35,24 @@ set(PROJECT_SOURCES
     GameObjects/Bat.h
     GameObjects/Puck.cpp
     GameObjects/Puck.h
-    RenderObjects/ShaderProgram.cpp
-    RenderObjects/ShaderProgram.h
-    RenderObjects/SceneObject.cpp
-    RenderObjects/SceneObject.h
-    RenderObjects/RenderObject.cpp
-    RenderObjects/RenderObject.h
-    RenderObjects/ComplexObject.cpp
-    RenderObjects/ComplexObject.h
-    RenderObjects/RoundedRectangle.cpp
-    RenderObjects/RoundedRectangle.h
-    RenderObjects/Circle.cpp
-    RenderObjects/Circle.h
-    RenderObjects/Rectangle.cpp
-    RenderObjects/Rectangle.h
-    RenderObjects/Ring.cpp
-    RenderObjects/Ring.h
+    GameObjects/Ai.cpp
+    GameObjects/Ai.h
+    SceneObjects/ShaderProgram.cpp
+    SceneObjects/ShaderProgram.h
+    SceneObjects/SceneObject.cpp
+    SceneObjects/SceneObject.h
+    SceneObjects/RenderObject.cpp
+    SceneObjects/RenderObject.h
+    SceneObjects/ComplexObject.cpp
+    SceneObjects/ComplexObject.h
+    SceneObjects/RoundedRectangle.cpp
+    SceneObjects/RoundedRectangle.h
+    SceneObjects/Circle.cpp
+    SceneObjects/Circle.h
+    SceneObjects/Rectangle.cpp
+    SceneObjects/Rectangle.h
+    SceneObjects/Ring.cpp
+    SceneObjects/Ring.h
     )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -58,22 +60,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET air_hockey APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 else()
-    if(ANDROID)
-        add_library(air_hockey SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(air_hockey
-            ${PROJECT_SOURCES}
-        )
-    endif()
+    add_executable(air_hockey
+        ${PROJECT_SOURCES}
+    )
 endif()
 
 target_link_libraries(air_hockey PRIVATE
@@ -86,12 +76,12 @@ set_target_properties(air_hockey PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE_EXECUTABLE_NAME Vega
+    MACOSX_BUNDLE_EXECUTABLE_NAME "Air Hockey"
     MACOSX_BUNDLE TRUE
 
     XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2"
     XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER my.example.com
-    XCODE_ATTRIBUTE_EXECUTABLE_NAME Vega
+    XCODE_ATTRIBUTE_EXECUTABLE_NAME "Air Hockey"
 
     WIN32_EXECUTABLE TRUE
 )

@@ -5,10 +5,11 @@
 #include "InputHandler.h"
 #include "Physics.h"
 #include "GameRules.h"
+#include "../GameObjects/Ai.h"
 #include "../GameObjects/Bat.h"
 #include "../GameObjects/Puck.h"
-#include "../RenderObjects/RoundedRectangle.h"
-#include "../RenderObjects/Ring.h"
+#include "../SceneObjects/RoundedRectangle.h"
+#include "../SceneObjects/Ring.h"
 
 #include <QOpenGLWindow>
 #include <QDebug>
@@ -34,6 +35,7 @@ private:
     Physics _physics = {_controlledObjects, _freeObjects};
     InputHandler* _inputHandler;
     GameRules* _gameRules;
+    Ai* _ai;
 
 protected:
     void mouseMoveEvent(QMouseEvent* event) override;

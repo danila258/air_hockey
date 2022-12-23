@@ -15,6 +15,7 @@ GameWindow::GameWindow()
 
     _inputHandler = new InputHandler(*userBat, *puck, width(), height());
     _gameRules = new GameRules(*userBat, *aiBat, *puck);
+    _ai = new Ai(*userBat, *aiBat, *puck);
 
     Ring* topRightRounding = new Ring(MAX_X - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
                                       MAX_Y - WALL_OFFSET - WALL_WIDTH - WALL_ROUNDING_RADIUS,
@@ -244,6 +245,7 @@ void GameWindow::initializeGL()
 void GameWindow::paintGL()
 {
     _inputHandler->updateUserBatPosition();
+    _ai->play();
     _gameRules->applyGameRules();
     _physics.calulatePhysics();
 
