@@ -6,7 +6,7 @@
 
 ## Technologies Used
 - C++17
-- Qt 6.2.4 LTS
-- OpenGL 3.3
+- Qt 6.2 LTS
+- OpenGL ES 2.0
 - CMake 3.5
 
