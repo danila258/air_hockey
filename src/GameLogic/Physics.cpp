@@ -26,20 +26,18 @@ void Physics::calulatePhysics()
 
 void Physics::calculateFreeObjectsWallsCollisions(QVector<GameObject*> objects) const
 {
-    // physics in gate and physics in playfield
-
     for (auto&& object : objects)
     {
         bool positionFlag = object->getX() - object->getRadius() > - GATE_WIDTH / 2.0f - WALL_RECTANGLE_RADIUS &&
                 object->getX() + object->getRadius() < GATE_WIDTH / 2.0f + WALL_RECTANGLE_RADIUS;
 
-        if (positionFlag &&
-            std::abs(object->getY() + object->getSpeed().y() ) >= MAX_Y - WALL_OFFSET - WALL_WIDTH)
+        if (positionFlag && std::abs(object->getY() + object->getSpeed().y() ) >= MAX_Y - WALL_OFFSET - WALL_WIDTH)
         {
             bool flag = false;
             QVector2D translate;
 
-            if (object->getX() + object->getRadius() + object->getSpeed().x() > GATE_WIDTH / 2.0f + WALL_RECTANGLE_RADIUS)
+            if (object->getX() + object->getRadius() + object->getSpeed().x() >
+                GATE_WIDTH / 2.0f)
             {
                 flag = true;
                 float difference = object->getX() + object->getRadius() + object->getSpeed().x()
@@ -51,7 +49,8 @@ void Physics::calculateFreeObjectsWallsCollisions(QVector<GameObject*> objects) 
                 object->setSpeed( getReflectedVector(object->getSpeed(), {-1.0f, 0.0f}) );
             }
 
-            if (object->getX() - object->getRadius() + object->getSpeed().x() < - GATE_WIDTH / 2.0f - WALL_RECTANGLE_RADIUS)
+            if (object->getX() - object->getRadius() + object->getSpeed().x() <
+                - GATE_WIDTH / 2.0f)
             {
                 flag = true;
                 float difference = object->getX() - object->getRadius() + object->getSpeed().x()

@@ -27,8 +27,10 @@ private:
     QVector2D _aiDirection;
     QVector2D _calculationPuckSpeed;
 
-    int _aiTime;      // time needed to hit
-    int _curTime;     // time from the beginning of hit
+    int _aiTime;      // time needed to smartHit
+    int _curTime;     // time from the beginning of smartHit
+
+    float _lastLength;
 
     bool _smartHitFlag = false;
     bool _basicHitFlag = false;

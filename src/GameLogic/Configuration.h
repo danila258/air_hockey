@@ -13,10 +13,10 @@
 #define MARKING_COLOR {0.22f, 0.270f, 0.370f}
 
 #define USER_BAT_CENTER_X 0.0f
-#define USER_BAT_CENTER_Y -0.9f
+#define USER_BAT_CENTER_Y -0.82f
 
 #define AI_BAT_CENTER_X 0.0f
-#define AI_BAT_CENTER_Y 0.9f
+#define AI_BAT_CENTER_Y 0.82f
 #define AI_BAT_SPEED 0.02f
 
 #define BAT_RADIUS 0.1f

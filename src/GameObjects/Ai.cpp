@@ -35,13 +35,11 @@ void Ai::play()
         std::abs( _calculationPuckSpeed.x() ) < std::abs( _puck.getSpeed().x() ) ||
         std::abs( _calculationPuckSpeed.y() ) < std::abs( _puck.getSpeed().y() ))
     {
-        qDebug() << "puck speed change" << _puck.getCenter();
+        qDebug() << "change speed";
 
         _basicHitFlag = false;
         _smartHitFlag = false;
         _completeHitFlag = true;
-
-        smartHit();
     }
     if (_smartHitFlag)
     {
@@ -61,11 +59,13 @@ void Ai::play()
         _aiBat.changeCenter(_aiDirection * AI_BAT_SPEED);
 
         if ((_puck.getCenter() - _aiBat.getCenter()).length() <= _puck.getRadius() +_aiBat.getRadius() ||
-             _puck.getY() - _puck.getRadius() < ZERO)
+             _puck.getY() - _puck.getRadius() < ZERO || _lastLength < (_puck.getCenter() - _aiBat.getCenter()).length())
         {
             _completeHitFlag = true;
             _basicHitFlag = false;
         }
+
+        _lastLength = (_puck.getCenter() - _aiBat.getCenter()).length();
     }
 }
 
@@ -97,6 +97,7 @@ void Ai::defense()
     }
 
     _aiBat.changeCenter(translateX, translateY);
+    _aiBat.setSpeed({translateX, translateY});
 }
 
 void Ai::smartHit()
@@ -106,12 +107,11 @@ void Ai::smartHit()
         basicHit();
         return;
     }
-    else if ( _puck.getSpeed().isNull() )
+    else if ( _puck.getSpeed().isNull() || _puck.getY() >= 0.75f)
     {
         defense();
         return;
     }
-
 
     QVector2D direction;
 
@@ -183,11 +183,22 @@ void Ai::basicHit()
         return;
     }
 
+    qDebug() << "basicHit";
+
     _basicHitFlag = true;
     _aiDirection = ( _puck.getCenter() - _aiBat.getCenter() ).normalized();
     _calculationPuckSpeed = _puck.getSpeed();
 
-    _aiBat.setSpeed(_aiDirection * AI_BAT_SPEED);
+    if ( _puck.getSpeed().isNull() )
+    {
+        _aiBat.setSpeed(_aiDirection * AI_BAT_SPEED * 1.5f);
+    }
+    else
+    {
+        _aiBat.setSpeed(_aiDirection * AI_BAT_SPEED);
+    }
+
+    _lastLength = (_puck.getCenter() - _aiBat.getCenter()).length();
 }
 
 
