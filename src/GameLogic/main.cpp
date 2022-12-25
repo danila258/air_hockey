@@ -18,7 +18,8 @@ int main(int argc, char **argv)
     GameWindow window;
 
 	window.setFormat(format);
-    window.resize(640, 640);
+    window.setMinimumSize(WINDOW_SIZE_MIN);
+    window.setMaximumSize(WINDOW_SIZE_MAX);
     window.show();
 
 	return app.exec();
