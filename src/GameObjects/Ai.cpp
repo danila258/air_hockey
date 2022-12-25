@@ -35,8 +35,6 @@ void Ai::play()
         std::abs( _calculationPuckSpeed.x() ) < std::abs( _puck.getSpeed().x() ) ||
         std::abs( _calculationPuckSpeed.y() ) < std::abs( _puck.getSpeed().y() ))
     {
-        qDebug() << "change speed";
-
         _basicHitFlag = false;
         _smartHitFlag = false;
         _completeHitFlag = true;
@@ -182,8 +180,6 @@ void Ai::basicHit()
     {
         return;
     }
-
-    qDebug() << "basicHit";
 
     _basicHitFlag = true;
     _aiDirection = ( _puck.getCenter() - _aiBat.getCenter() ).normalized();

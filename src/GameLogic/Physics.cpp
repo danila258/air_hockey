@@ -28,15 +28,19 @@ void Physics::calculateFreeObjectsWallsCollisions(QVector<GameObject*> objects) 
 {
     for (auto&& object : objects)
     {
-        bool positionFlag = object->getX() - object->getRadius() > - GATE_WIDTH / 2.0f - WALL_RECTANGLE_RADIUS &&
-                object->getX() + object->getRadius() < GATE_WIDTH / 2.0f + WALL_RECTANGLE_RADIUS;
+        bool positionFlag = object->getX() - object->getRadius() >= - GATE_WIDTH / 2.0f &&
+                object->getX() + object->getRadius() <= GATE_WIDTH / 2.0f;
 
-        if (positionFlag && std::abs(object->getY() + object->getSpeed().y() ) >= MAX_Y - WALL_OFFSET - WALL_WIDTH)
+        bool positionFlag2 = object->getX() - object->getRadius() + object->getSpeed().x() < - GATE_WIDTH / 2.0f &&
+                object->getX() + object->getRadius() + object->getSpeed().x() > GATE_WIDTH / 2.0f;
+
+        if (positionFlag && std::abs( object->getY() ) + object->getRadius() + object->getSpeed().y()
+            > MAX_Y - WALL_OFFSET - WALL_WIDTH)
         {
             bool flag = false;
             QVector2D translate;
 
-            if (object->getX() + object->getRadius() + object->getSpeed().x() >
+            if (object->getX() + object->getRadius() + object->getSpeed().x() >=
                 GATE_WIDTH / 2.0f)
             {
                 flag = true;
@@ -46,10 +50,10 @@ void Physics::calculateFreeObjectsWallsCollisions(QVector<GameObject*> objects) 
                 translate = object->getSpeed().normalized()
                             * (object->getSpeed().length() - difference / getSin(object->getSpeed(), {0.0f, 1.0f}));
 
-                object->setSpeed( getReflectedVector(object->getSpeed(), {-1.0f, 0.0f}) );
+                object->setSpeed( getReflectedVector(object->getSpeed(), {1.0f, 0.0f}) );
             }
 
-            if (object->getX() - object->getRadius() + object->getSpeed().x() <
+            if (object->getX() - object->getRadius() + object->getSpeed().x() <=
                 - GATE_WIDTH / 2.0f)
             {
                 flag = true;
@@ -59,7 +63,7 @@ void Physics::calculateFreeObjectsWallsCollisions(QVector<GameObject*> objects) 
                 translate = object->getSpeed().normalized()
                              * (object->getSpeed().length() + difference / getSin(object->getSpeed(), {0.0f, 1.0f}));
 
-                object->setSpeed( getReflectedVector(object->getSpeed(), {1.0f, 0.0f}) );
+                object->setSpeed( getReflectedVector(object->getSpeed(), {-1.0f, 0.0f}) );
             }
 
             if (flag)
