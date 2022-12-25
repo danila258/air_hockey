@@ -6,17 +6,18 @@ Ai::Ai(const GameObject& userBat, GameObject& aiBat, const GameObject& puck)
 
 void Ai::play()
 {
-    if (_completeHitFlag && _puck.getY() - _puck.getRadius() >= 0 && _puck.getSpeed().isNull())
+    if (_completeHitFlag && _puck.getY() - _puck.getRadius() >= ZERO && _puck.getSpeed().isNull())
     {
         _completeHitFlag = false;
         basicHit();
+
         return;
     }
     else if (_completeHitFlag)
     {
         defense();
 
-        if (_puck.getY() - _puck.getRadius() < 0)
+        if (_puck.getY() - _puck.getRadius() < ZERO)
         {
             _completeHitFlag = false;
         }
@@ -36,33 +37,34 @@ void Ai::play()
     {
         qDebug() << "puck speed change" << _puck.getCenter();
 
-        if (_smartHitFlag)
+        _basicHitFlag = false;
+        _smartHitFlag = false;
+        _completeHitFlag = true;
+
+        smartHit();
+    }
+    if (_smartHitFlag)
+    {
+        if (_curTime < _aiTime)
         {
-            smartHit();
+            ++_curTime;
+            _aiBat.changeCenter(_aiDirection * AI_BAT_SPEED);
         }
         else
-        {
-            basicHit();
-        }
-    }
-    if (_curTime < _aiTime)
-    {
-        ++_curTime;
-        _aiBat.changeCenter(_aiDirection * AI_BAT_SPEED);
-    }
-    else
-    {
-        qDebug() << "end hit";
-
-        if (_smartHitFlag)
         {
             _smartHitFlag = false;
             basicHit();
         }
-        else
+    }
+    else
+    {
+        _aiBat.changeCenter(_aiDirection * AI_BAT_SPEED);
+
+        if ((_puck.getCenter() - _aiBat.getCenter()).length() <= _puck.getRadius() +_aiBat.getRadius() ||
+             _puck.getY() - _puck.getRadius() < ZERO)
         {
-            _basicHitFlag = false;
             _completeHitFlag = true;
+            _basicHitFlag = false;
         }
     }
 }
@@ -78,15 +80,14 @@ void Ai::defense()
     if (std::abs( _aiBat.getX() ) > GATE_WIDTH / 2.0f)
     {
         translateX = (_puck.getX() > 0)? -AI_BAT_SPEED : AI_BAT_SPEED;
-        _aiBat.changeCenter(translateX, ZERO);
     }
     else if (std::abs(translateX) > AI_BAT_SPEED)
     {
         translateX = (translateX > 0)? AI_BAT_SPEED : -AI_BAT_SPEED;
 
-        if (_aiBat.getX() + translateX > - GATE_WIDTH / 2.0f && _aiBat.getX() + translateX < GATE_WIDTH / 2.0f)
+        if ( !(_aiBat.getX() + translateX > - GATE_WIDTH / 2.0f && _aiBat.getX() + translateX < GATE_WIDTH / 2.0f) )
         {
-            _aiBat.changeCenter(translateX, ZERO);
+            translateX = ZERO;
         }
     }
 
@@ -95,30 +96,41 @@ void Ai::defense()
         translateY = (translateY > 0)? AI_BAT_SPEED : -AI_BAT_SPEED;
     }
 
-    _aiBat.changeCenter(ZERO, translateY);
+    _aiBat.changeCenter(translateX, translateY);
 }
 
 void Ai::smartHit()
 {
-    QVector2D aiDirection;
-
-    if ( _puck.getSpeed().isNull() )
+    if ( _puck.getSpeed().isNull() && _puck.getY() - _puck.getRadius() > ZERO)
     {
         basicHit();
         return;
     }
-    else
+    else if ( _puck.getSpeed().isNull() )
     {
-        aiDirection = {-_puck.getSpeed().y(), _puck.getSpeed().x()};
+        defense();
+        return;
     }
 
-    aiDirection.normalize();
+
+    QVector2D direction;
+
+    if (_puck.getSpeed().x() * _puck.getSpeed().y() > ZERO)
+    {
+        direction = {_puck.getSpeed().y(), -_puck.getSpeed().x()};
+    }
+    else
+    {
+        direction = {-_puck.getSpeed().y(), _puck.getSpeed().x()};
+    }
+
+    direction.normalize();
 
     float aiPathLength = _aiBat.getCenter().distanceToLine(_puck.getCenter(), _puck.getSpeed().normalized());
 
     _aiTime = aiPathLength / AI_BAT_SPEED;
 
-    QVector2D aiCollisionPoint = _aiBat.getCenter() + aiDirection * AI_BAT_SPEED * _aiTime;
+    QVector2D aiCollisionPoint = _aiBat.getCenter() + direction * AI_BAT_SPEED * _aiTime;
 
     if (!(aiCollisionPoint.y() - _aiBat.getRadius() > ZERO
           && aiCollisionPoint.y() < MAX_Y - WALL_OFFSET - WALL_WIDTH
@@ -153,9 +165,9 @@ void Ai::smartHit()
     {
         _smartHitFlag = true;
         _curTime = 0;
-        _aiBat.setSpeed(aiDirection * AI_BAT_SPEED);
+        _aiDirection = direction;
 
-        _aiDirection = aiDirection;
+        _aiBat.setSpeed(_aiDirection * AI_BAT_SPEED);
         _calculationPuckSpeed = _puck.getSpeed();
     }
     else
@@ -171,45 +183,8 @@ void Ai::basicHit()
         return;
     }
 
-    _curTime = 0;
-
-    QVector2D direction = _puck.getCenter() - _aiBat.getCenter();
-
-    float frictionForceX = std::abs(_puck.getSpeed().x() / float(_puck.getSpeed().length())) * FRICTION_FORCE;
-    float frictionForceY = std::abs(_puck.getSpeed().y() / float(_puck.getSpeed().length())) * FRICTION_FORCE;
-
-    int maxPuckTime = _puck.getSpeed().x() / frictionForceX;
-
-    QVector2D time = solveQuadraticEquation(0.5f * frictionForceX,
-                                            direction.normalized().x() * AI_BAT_SPEED - _puck.getSpeed().x(),
-                                            _aiBat.getX() - _puck.getX());
-
-    QVector2D time2 = solveQuadraticEquation(0.5f * frictionForceY,
-                                             direction.normalized().y() * AI_BAT_SPEED - _puck.getSpeed().y(),
-                                             _aiBat.getY() - _puck.getY());
-
-    if ( _puck.getSpeed().isNull() )
-    {
-        _aiTime = (direction.length() - _puck.getRadius() - _aiBat.getRadius()) / AI_BAT_SPEED + 1;
-        qDebug() << "standart" << _aiTime;
-    }
-    else if (time[0] > maxPuckTime)
-    {
-        QVector2D newPuckCenter =
-        {_puck.getX() + _puck.getSpeed().x() * maxPuckTime - 0.5f * frictionForceX * maxPuckTime * maxPuckTime,
-         _puck.getY() + _puck.getSpeed().y() * maxPuckTime - 0.5f * frictionForceY * maxPuckTime * maxPuckTime};
-
-        _aiTime = ((newPuckCenter - _aiBat.getCenter()).length() - _puck.getRadius() - _aiBat.getRadius()) / AI_BAT_SPEED - 1;
-        qDebug() << "newPuckCenter" << _aiTime << frictionForceX;
-    }
-    else
-    {
-        _aiTime = time[0];
-        qDebug() << "motion collision" << _aiTime;
-    }
-
     _basicHitFlag = true;
-    _aiDirection = direction.normalized();
+    _aiDirection = ( _puck.getCenter() - _aiBat.getCenter() ).normalized();
     _calculationPuckSpeed = _puck.getSpeed();
 
     _aiBat.setSpeed(_aiDirection * AI_BAT_SPEED);
