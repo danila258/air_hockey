@@ -6,6 +6,21 @@ Ai::Ai(const GameObject& userBat, GameObject& aiBat, const GameObject& puck)
 
 void Ai::play()
 {
+    if (_smartHitFlag == false && _basicHitFlag == false &&
+        _puck.getCenter().y() == MAX_Y - WALL_WIDTH - WALL_OFFSET - _puck.getRadius() &&
+        !_jamFlag)
+    {
+        if (std::abs(_lastPuckCenter.x() - _puck.getCenter().x()) <= 0.0001f &&
+            _lastPuckCenter.y() == _puck.getCenter().y())
+        {
+            qDebug() << "jam";
+            aiFixJam();
+            return;
+        }
+    }
+
+    _lastPuckCenter = _puck.getCenter();
+
     if (_completeHitFlag && _puck.getY() - _puck.getRadius() >= ZERO && _puck.getSpeed().isNull())
     {
         _completeHitFlag = false;
@@ -31,9 +46,10 @@ void Ai::play()
         return;
     }
 
-    if (getCos(_puck.getSpeed(), _calculationPuckSpeed) < 0.99f && !_puck.getSpeed().isNull() ||
+    if ((getCos(_puck.getSpeed(), _calculationPuckSpeed) < 0.99f && !_puck.getSpeed().isNull() ||
         std::abs( _calculationPuckSpeed.x() ) < std::abs( _puck.getSpeed().x() ) ||
         std::abs( _calculationPuckSpeed.y() ) < std::abs( _puck.getSpeed().y() ))
+        && !_jamFlag)
     {
         _basicHitFlag = false;
         _smartHitFlag = false;
@@ -48,7 +64,19 @@ void Ai::play()
         }
         else
         {
+            if (_jamFlag && _jamCount != 1)
+            {
+                ++_jamCount;
+                _curTime = 0;
+                _aiDirection = {-_aiDirection.x(), ZERO};
+
+                return;
+            }
+
             _smartHitFlag = false;
+            _jamFlag = false;
+            _jamCount = 0;
+
             basicHit();
         }
     }
@@ -196,5 +224,38 @@ void Ai::basicHit()
 
     _lastLength = (_puck.getCenter() - _aiBat.getCenter()).length();
 }
+
+void Ai::aiFixJam()
+{
+    _completeHitFlag = false;
+    _basicHitFlag = false;
+    _smartHitFlag = true;
+    _jamFlag = true;
+
+    _curTime = 0;
+    _aiTime = _aiBat.getCenter().distanceToLine({ZERO, ZERO}, {ZERO, 1.0f}) / AI_BAT_SPEED;
+    _aiBat.setSpeed({2.0f, ZERO});
+
+    if (_aiBat.getX() < ZERO)
+    {
+        _aiDirection = {1.0f, 1.0f};
+    }
+    else
+    {
+        _aiDirection = {-1.0f, 1.0f};
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 

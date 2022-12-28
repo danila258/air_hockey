@@ -19,6 +19,7 @@ private:
     void defense();
     void smartHit();
     void basicHit();
+    void aiFixJam();
 
     GameObject& _aiBat;
     const GameObject& _userBat;
@@ -32,9 +33,13 @@ private:
 
     float _lastLength;
 
+    QVector2D _lastPuckCenter;
+    int _jamCount = 0;
+
     bool _smartHitFlag = false;
     bool _basicHitFlag = false;
     bool _completeHitFlag = false;
+    bool _jamFlag = false;
 };
 
 
