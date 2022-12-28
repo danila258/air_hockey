@@ -13,7 +13,6 @@ void Ai::play()
         if (std::abs(_lastPuckCenter.x() - _puck.getCenter().x()) <= 0.0001f &&
             _lastPuckCenter.y() == _puck.getCenter().y())
         {
-            qDebug() << "jam";
             aiFixJam();
             return;
         }
