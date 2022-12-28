@@ -207,6 +207,10 @@ void Physics::calculateObjectsCollisions() const
                 {
                     projectionSecond = getProjection(connectedVector, controlledObject->getSpeed());
                 }
+                else
+                {
+                    projectionSecond = getProjection(connectedVector, -controlledObject->getSpeed());
+                }
 
                 freeObject->setSpeed(projectionOne + projectionSecond);
             }
