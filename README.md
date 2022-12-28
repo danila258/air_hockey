@@ -2,13 +2,8 @@
 A cross-platform 2D game which uses Qt as a base for OpenGL. Physics and Ai are implemented by original algorithms. The game does not use textures.
 
 <p align="center">
-  <img src = "https://drive.google.com/uc?export=view&id=1ez2Fj9gsWU3VIVt5lqGudka8TN5AoObP" width=300>
+  <img src = "https://drive.google.com/uc?export=view&id=1ez2Fj9gsWU3VIVt5lqGudka8TN5AoObP" width=500>
 </p>
-
-## Table of Contents
-* [Technologies Used](#technologies-used)
-* [Build](#build)
-* [License](#license)
 
 ## Technologies Used
 - C++17
@@ -22,4 +17,3 @@ A cross-platform 2D game which uses Qt as a base for OpenGL. Physics and Ai are 
 
 ## License
 GPL-3.0
-
