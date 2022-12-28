@@ -9,7 +9,7 @@ A cross-platform 2D game which uses Qt as a base for OpenGL. Physics and Ai are 
 ## Technologies Used
 - C++17
 - Qt 6.2 LTS
-- OpenGL ES 2.0
+- OpenGL 3.3
 - CMake 3.5
 
 ## Build
