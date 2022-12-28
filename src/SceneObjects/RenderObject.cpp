@@ -37,7 +37,7 @@ void RenderObject::create()
     _vao.create();
     _vao.bind();
 
-    _program.setShaderPath(":/Shaders/pass_through.vert", ":/Shaders/simple.frag");
+    _program.setShaderPath(":/Shaders/shader.vert", ":/Shaders/shader.frag");
     _program.create();
 
     _program.getShaderProgram()->enableAttributeArray(0);
