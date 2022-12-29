@@ -2,7 +2,6 @@
 A cross-platform 2D game which uses Qt as a base for OpenGL. Physics and Ai are implemented by original algorithms. The game does not use textures.
 
 <p align="center">
-  <a href="https://drive.google.com/uc?export=view&id=1ez2Fj9gsWU3VIVt5lqGudka8TN5AoObP">
   <img src="https://drive.google.com/uc?export=view&id=<1ez2Fj9gsWU3VIVt5lqGudka8TN5AoObP>" style="width: 500px; max-width: 100%; height: auto" title="Click to enlarge picture" />
 </p>
 
