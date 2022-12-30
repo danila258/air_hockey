@@ -1,5 +1,5 @@
 # Air Hockey
-A cross-platform 2D game which uses Qt as a base for OpenGL. Physics and Ai are implemented by original algorithms. The game does not use textures.
+A cross-platform 2D game which uses Qt as a base for OpenGL. Physics and AI are implemented by original algorithms. The game does not use textures.
 
 <p align="center">
    <a href="https://drive.google.com/uc?export=view&id=1ez2Fj9gsWU3VIVt5lqGudka8TN5AoObP">
